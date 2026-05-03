@@ -3,9 +3,13 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
+import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
+
+import { Fredoka_400Regular } from "@expo-google-fonts/fredoka";
+import { Quicksand_400Regular } from "@expo-google-fonts/quicksand";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
 
@@ -14,7 +18,14 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
+  const [loaded] = useFonts({
+    Fredoka: Fredoka_400Regular,
+    Quicksand: Quicksand_400Regular,
+  });
+
   const colorScheme = useColorScheme();
+
+  if (!loaded) return null;
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>

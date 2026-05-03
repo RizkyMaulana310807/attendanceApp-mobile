@@ -1,131 +1,115 @@
+import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import React, { useEffect, useRef } from "react";
+import { Animated, StyleSheet, View } from "react-native";
 
 import { HapticTab } from "@/components/haptic-tab";
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { Colors } from "@/constants/theme";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+
+// 🔥 Component reusable untuk icon animasi
+function AnimatedIcon({
+  route,
+  focused,
+}: {
+  route: "home" | "history" | "profile";
+  focused: boolean;
+}) {
+  const translateY = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(translateY, {
+      toValue: focused ? -12 : 0,
+      duration: 250,
+      useNativeDriver: true,
+    }).start();
+  }, [focused]);
+
+  // 🎯 mapping icon
+  const getIconName = () => {
+    switch (route) {
+      case "home":
+        return focused ? "home" : "home-outline";
+      case "history":
+        return focused ? "time" : "time-outline";
+      case "profile":
+        return focused ? "person" : "person-outline";
+    }
+  };
+
+  return (
+    <Animated.View
+      style={[
+        styles.iconContainer,
+        {
+          transform: [{ translateY }],
+        },
+      ]}
+    >
+      <View
+        style={[
+          styles.iconWrapper,
+          {
+            backgroundColor: focused ? "#FFFFFF" : "#000000",
+          },
+        ]}
+      >
+        <Ionicons
+          size={24}
+          name={getIconName()}
+          color={focused ? "#000000" : "#FFFFFF"}
+        />
+      </View>
+    </Animated.View>
+  );
+}
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        tabBarInactiveTintColor: Colors[colorScheme ?? "light"].tabIconDefault,
         headerShown: false,
+        tabBarShowLabel: false,
         tabBarButton: HapticTab,
         tabBarStyle: {
           height: 80,
-          paddingBottom: 10,
           paddingTop: 10,
-          backgroundColor: Colors[colorScheme ?? "light"].background,
-          borderTopColor: Colors[colorScheme ?? "light"].tabIconDefault,
-          borderTopWidth: 1,
-        },
-        tabBarLabelStyle: {
-          fontSize: 12,
-          marginTop: 4,
+          paddingBottom: 10,
+          backgroundColor: "#000",
+          borderTopWidth: 0,
         },
       }}
     >
+      {/* ❗ Hide index */}
+      <Tabs.Screen
+        name="index"
+        options={{
+          href: null,
+        }}
+      />
+
       <Tabs.Screen
         name="history"
         options={{
-          title: "History",
-          href: "/history",
-          tabBarIcon: ({ color, focused }) => (
-            <View
-              style={[
-                styles.iconContainer,
-                {
-                  transform: [{ translateY: focused ? -8 : 0 }],
-                },
-              ]}
-            >
-              <View
-                style={[
-                  styles.iconWrapper,
-                  {
-                    backgroundColor: focused
-                      ? Colors[colorScheme ?? "light"].tint
-                      : "transparent",
-                    borderRadius: focused ? 12 : 0,
-                  },
-                ]}
-              >
-                <IconSymbol size={28} name="clock.fill" color={color} />
-              </View>
-            </View>
+          tabBarIcon: ({ focused }) => (
+            <AnimatedIcon route="history" focused={focused} />
           ),
-          tabBarLabel: ({ focused, color }) => (!focused ? "History" : ""),
         }}
       />
+
       <Tabs.Screen
         name="home"
         options={{
-          title: "Home",
-          href: "/home",
-          tabBarIcon: ({ color, focused }) => (
-            <View
-              style={[
-                styles.iconContainer,
-                {
-                  transform: [{ translateY: focused ? -8 : 0 }],
-                },
-              ]}
-            >
-              <View
-                style={[
-                  styles.iconWrapper,
-                  {
-                    backgroundColor: focused
-                      ? Colors[colorScheme ?? "light"].tint
-                      : "transparent",
-                    borderRadius: focused ? 12 : 0,
-                  },
-                ]}
-              >
-                <IconSymbol size={28} name="house.fill" color={color} />
-              </View>
-            </View>
+          tabBarIcon: ({ focused }) => (
+            <AnimatedIcon route="home" focused={focused} />
           ),
-          tabBarLabel: ({ focused, color }) => (!focused ? "Home" : ""),
         }}
       />
 
       <Tabs.Screen
         name="profile"
         options={{
-          title: "Profile",
-          href: "/profile",
-          tabBarIcon: ({ color, focused }) => (
-            <View
-              style={[
-                styles.iconContainer,
-                {
-                  transform: [{ translateY: focused ? -8 : 0 }],
-                },
-              ]}
-            >
-              <View
-                style={[
-                  styles.iconWrapper,
-                  {
-                    backgroundColor: focused
-                      ? Colors[colorScheme ?? "light"].tint
-                      : "transparent",
-                    borderRadius: focused ? 12 : 0,
-                  },
-                ]}
-              >
-                <IconSymbol size={28} name="person.fill" color={color} />
-              </View>
-            </View>
+          tabBarIcon: ({ focused }) => (
+            <AnimatedIcon route="profile" focused={focused} />
           ),
-          tabBarLabel: ({ focused, color }) => (!focused ? "Profile" : ""),
         }}
       />
     </Tabs>
@@ -138,7 +122,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   iconWrapper: {
-    padding: 8,
-    paddingHorizontal: 12,
+    width: 50,
+    height: 50,
+    borderRadius: 25, // ✅ bulat sempurna
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
