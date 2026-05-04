@@ -1,6 +1,7 @@
+import styles from "@/assets/styles/profileStyle";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
 
 export default function profile() {
   return (
@@ -22,7 +23,8 @@ export default function profile() {
         }}
         resizeMode="contain"
       />
-      {/* Card photo Profile */}
+
+      {/* Card Photo Profile { HEADER } */}
       <View style={styles.profileCardContainer}>
         {/* Profile Image Container */}
         <View>
@@ -39,11 +41,13 @@ export default function profile() {
             <View style={styles.userStatusCircle}></View>
           </View>
         </View>
+
         {/* User Name */}
         <View style={styles.UserNameContainer}>
           <Text style={styles.userNameText}>User_Name</Text>
           <Text style={styles.userRoleText}>User_Role</Text>
         </View>
+
         {/* Account Settings */}
         <View style={styles.settingContainer}>
           <View style={styles.settingsButton}>
@@ -51,67 +55,86 @@ export default function profile() {
           </View>
         </View>
       </View>
+
+      {/* Card Streak { BODY } */}
+      <View style={styles.cardStreakContainer}>
+        {/* Streak Data Info */}
+        <View style={styles.StreakDataContainer}>
+          {/* Streak Week Display */}
+          <View style={styles.streakWeekDisplayContainer}>
+            {/* Number Of Week */}
+            <View style={styles.numberOfWeekContainer}>
+              {/* Number */}
+              <View>
+                <Text style={styles.numberOfWeekText}>1</Text>
+              </View>
+
+              {/* Ordinal Indicator st, nd, rd, th */}
+              <View>
+                <Text style={styles.ordinalIndicatorText}>St.</Text>
+              </View>
+            </View>
+
+            {/* Date Display */}
+            <View style={styles.dateDisplayContainer}>
+              <Text style={styles.weekNameText}>Wednesday</Text>
+              <Text style={styles.dateInfoText}>December, 2026</Text>
+            </View>
+          </View>
+          {/* Week Change Button */}
+          <View style={styles.actionButtonContainer}>
+            {/* Previous Week Button */}
+            <View style={styles.streakWeekActionButton}>
+              {" "}
+              <Ionicons name="chevron-back-outline" size={35} color="#F7FFF7" />
+            </View>
+
+            {/* Next Week Button */}
+            <View style={styles.streakWeekActionButton}>
+              {" "}
+              <Ionicons
+                name="chevron-forward-outline"
+                size={35}
+                color="#F7FFF7"
+              />
+            </View>
+          </View>
+          {/* Streak Count Info */}
+          <View style={styles.streakCounterContainer}>
+            <Image
+              source={require("@/assets/images/StreakCounter.png")}
+              style={{ width: 75, height: 75 }}
+            />
+
+            <Text style={styles.streakCounterText}>512</Text>
+          </View>{" "}
+        </View>
+
+        {/* Streak Days Progress { FOOTER } */}
+        <View style={styles.streakDaysProgressContainer}>
+          <View style={styles.streakAbsent}>
+            <Text style={styles.alphabetStreakProgress}>A</Text>
+          </View>
+          <View style={styles.streakPresent}>
+            <Text style={styles.alphabetStreakProgress}>P</Text>
+          </View>
+          <View style={styles.streakPresent}>
+            <Text style={styles.alphabetStreakProgress}>P</Text>
+          </View>
+          <View style={styles.streakPresent}>
+            <Text style={styles.alphabetStreakProgress}>P</Text>
+          </View>
+          <View style={styles.streakPresent}>
+            <Text style={styles.alphabetStreakProgress}>P</Text>
+          </View>
+          <View style={styles.streakPresent}>
+            <Text style={styles.alphabetStreakProgress}>P</Text>
+          </View>
+          <View style={styles.streakSick}>
+            <Text style={styles.alphabetStreakProgress}>S</Text>
+          </View>
+        </View>
+      </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  profileCardContainer: {
-    backgroundColor: "#F7FFF7",
-    borderRadius: 10,
-    zIndex: 100,
-    padding: 20,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    gap: 12,
-    borderWidth: 4,
-    borderColor: "#0F172A",
-  },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 100,
-    borderWidth: 4,
-  },
-  profileImageContainer: {
-    position: "relative",
-  },
-  userStatusCircle: {
-    position: "absolute",
-    width: 25,
-    height: 25,
-    backgroundColor: "#84CC16",
-    borderRadius: 100,
-    borderColor: "#0F172A",
-    borderWidth: 4,
-    bottom: 5,
-  },
-  UserNameContainer: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    flex: 1,
-  },
-  userNameText: {
-    fontSize: 20,
-    fontFamily: "Quicksand",
-    fontWeight: "bold",
-  },
-  userRoleText: {
-    fontSize: 15,
-    fontFamily: "Quicksand",
-    fontWeight: "regular",
-  },
-  settingContainer: {
-    display: "flex",
-  },
-  settingsButton: {
-    backgroundColor: "#84CC16",
-    paddingVertical: 3,
-    paddingHorizontal: 4,
-    borderRadius: 999,
-    borderWidth: 4,
-    borderColor: "#0F172A",
-  },
-});
