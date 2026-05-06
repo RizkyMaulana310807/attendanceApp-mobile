@@ -1,10 +1,21 @@
-import styles from "@/assets/styles/profileStyle";
-import { Ionicons } from "@expo/vector-icons";
+import { ProfileCard } from "@/app/partials/profile/cardProfile";
 import React from "react";
-import { Image, Text, View } from "react-native";
-
+import { Image, View } from "react-native";
+import { StreakCard } from "../partials/profile/cardWeekStreak";
+import ProgressCard from "../partials/profile/progressCard";
 export default function profile() {
-  return (
+  // Menggunakan Template String untuk menyusun JSX yang bersih dan bebas spasi acak
+  const dataUser = {
+    name: "Rizky Maulana",
+    role: "Senior Developer",
+  };
+  const data = {
+    totalHours: 8, // Data dari API/API/State
+    progress: 60, // Angka 0 - 100 (misal: 60)
+    taskText: "2/3", // String hasil parsing dari server ("2/3")
+  };
+
+  const renderBody = () => (
     <View
       style={{
         height: "100%",
@@ -12,7 +23,7 @@ export default function profile() {
         position: "relative",
       }}
     >
-      {/* Pattern Profile */}
+      {/* Pattern Profile Banner */}
       <Image
         source={require("../../assets/images/ProfileBanner.png")}
         style={{
@@ -24,117 +35,18 @@ export default function profile() {
         resizeMode="contain"
       />
 
-      {/* Card Photo Profile { HEADER } */}
-      <View style={styles.profileCardContainer}>
-        {/* Profile Image Container */}
-        <View>
-          {/* Image Container */}
-          <View style={styles.profileImageContainer}>
-            {/* Profile Image */}
-            <Image
-              style={styles.profileImage}
-              source={{
-                uri: "https://i.pinimg.com/1200x/e3/a1/44/e3a1446e603d77a85b6c14d479fe5243.jpg",
-              }}
-            />
-            {/* User Status */}
-            <View style={styles.userStatusCircle}></View>
-          </View>
-        </View>
-
-        {/* User Name */}
-        <View style={styles.UserNameContainer}>
-          <Text style={styles.userNameText}>User_Name</Text>
-          <Text style={styles.userRoleText}>User_Role</Text>
-        </View>
-
-        {/* Account Settings */}
-        <View style={styles.settingContainer}>
-          <View style={styles.settingsButton}>
-            <Ionicons name="cog-outline" size={40} color="#0F172A" />
-          </View>
-        </View>
-      </View>
-
-      {/* Card Streak { BODY } */}
-      <View style={styles.cardStreakContainer}>
-        {/* Streak Data Info */}
-        <View style={styles.StreakDataContainer}>
-          {/* Streak Week Display */}
-          <View style={styles.streakWeekDisplayContainer}>
-            {/* Number Of Week */}
-            <View style={styles.numberOfWeekContainer}>
-              {/* Number */}
-              <View>
-                <Text style={styles.numberOfWeekText}>1</Text>
-              </View>
-
-              {/* Ordinal Indicator st, nd, rd, th */}
-              <View>
-                <Text style={styles.ordinalIndicatorText}>St.</Text>
-              </View>
-            </View>
-
-            {/* Date Display */}
-            <View style={styles.dateDisplayContainer}>
-              <Text style={styles.weekNameText}>Wednesday</Text>
-              <Text style={styles.dateInfoText}>December, 2026</Text>
-            </View>
-          </View>
-          {/* Week Change Button */}
-          <View style={styles.actionButtonContainer}>
-            {/* Previous Week Button */}
-            <View style={styles.streakWeekActionButton}>
-              {" "}
-              <Ionicons name="chevron-back-outline" size={35} color="#F7FFF7" />
-            </View>
-
-            {/* Next Week Button */}
-            <View style={styles.streakWeekActionButton}>
-              {" "}
-              <Ionicons
-                name="chevron-forward-outline"
-                size={35}
-                color="#F7FFF7"
-              />
-            </View>
-          </View>
-          {/* Streak Count Info */}
-          <View style={styles.streakCounterContainer}>
-            <Image
-              source={require("@/assets/images/StreakCounter.png")}
-              style={{ width: 75, height: 75 }}
-            />
-
-            <Text style={styles.streakCounterText}>512</Text>
-          </View>{" "}
-        </View>
-
-        {/* Streak Days Progress { FOOTER } */}
-        <View style={styles.streakDaysProgressContainer}>
-          <View style={styles.streakAbsent}>
-            <Text style={styles.alphabetStreakProgress}>A</Text>
-          </View>
-          <View style={styles.streakPresent}>
-            <Text style={styles.alphabetStreakProgress}>P</Text>
-          </View>
-          <View style={styles.streakPresent}>
-            <Text style={styles.alphabetStreakProgress}>P</Text>
-          </View>
-          <View style={styles.streakPresent}>
-            <Text style={styles.alphabetStreakProgress}>P</Text>
-          </View>
-          <View style={styles.streakPresent}>
-            <Text style={styles.alphabetStreakProgress}>P</Text>
-          </View>
-          <View style={styles.streakPresent}>
-            <Text style={styles.alphabetStreakProgress}>P</Text>
-          </View>
-          <View style={styles.streakSick}>
-            <Text style={styles.alphabetStreakProgress}>S</Text>
-          </View>
-        </View>
-      </View>
+      {/* Card Photo Profile */}
+      <ProfileCard user_name={dataUser.name} user_role={dataUser.role} />
+      {/* Card Streak */}
+      <StreakCard streak_total={10} />
+      {/* Progress Card */}
+      <ProgressCard
+        totalHours={data.totalHours}
+        totalPresent={data.progress}
+        task={data.taskText}
+      />
     </View>
   );
+
+  return renderBody();
 }

@@ -65,18 +65,15 @@ const styles = StyleSheet.create({
     fontSize: 64,
     fontWeight: "bold",
     color: "#84CC16",
-    textShadowColor: "black",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 1,
+    textShadow: "black 2px 2px 1px",
   },
+
   ordinalIndicatorText: {
     fontSize: 20,
     fontFamily: "Fredoka",
     fontWeight: "bold",
     color: "#84CC16",
-    textShadowColor: "black",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 1,
+    textShadow: "black 2px 2px 1px",
   },
   numberOfWeekContainer: {
     display: "flex",
