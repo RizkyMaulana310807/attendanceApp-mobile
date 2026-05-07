@@ -1,18 +1,19 @@
 import { ProfileCard } from "@/app/partials/profile/cardProfile";
+import styles from "@/assets/styles/profileStyle";
 import React from "react";
-import { Image, View } from "react-native";
+import { Image, Text, View } from "react-native";
 import { StreakCard } from "../partials/profile/cardWeekStreak";
-import ProgressCard from "../partials/profile/progressCard";
+import CircleProgress from "../partials/profile/progressCard";
 export default function profile() {
   // Menggunakan Template String untuk menyusun JSX yang bersih dan bebas spasi acak
   const dataUser = {
     name: "Rizky Maulana",
     role: "Senior Developer",
   };
-  const data = {
-    totalHours: 8, // Data dari API/API/State
-    progress: 60, // Angka 0 - 100 (misal: 60)
-    taskText: "2/3", // String hasil parsing dari server ("2/3")
+  const dataProgress = {
+    totalHours: Math.round((8 / 8) * 100),
+    progress: Math.round((60 / 365) * 100),
+    taskCompleted: Math.round((2 / 3) * 100),
   };
 
   const renderBody = () => (
@@ -34,17 +35,36 @@ export default function profile() {
         }}
         resizeMode="contain"
       />
-
       {/* Card Photo Profile */}
       <ProfileCard user_name={dataUser.name} user_role={dataUser.role} />
       {/* Card Streak */}
       <StreakCard streak_total={10} />
       {/* Progress Card */}
-      <ProgressCard
-        totalHours={data.totalHours}
-        totalPresent={data.progress}
-        task={data.taskText}
-      />
+      <View style={styles.cardProgressContainer}>
+        {/* Hours total */}
+        <View style={styles.progressTextContainer}>
+          <CircleProgress progress={dataProgress.totalHours} />
+          <Text>Hours Total</Text>
+        </View>
+
+        {/* Separator */}
+        <View style={styles.separator} />
+
+        {/* Total present */}
+        <View style={styles.progressTextContainer}>
+          <CircleProgress progress={dataProgress.progress} />
+          <Text>Total Present</Text>
+        </View>
+
+        {/* Separator */}
+        <View style={styles.separator} />
+
+        {/* Task Complete */}
+        <View style={styles.progressTextContainer}>
+          <CircleProgress progress={dataProgress.taskCompleted} />
+          <Text>Task Complete</Text>
+        </View>
+      </View>{" "}
     </View>
   );
 

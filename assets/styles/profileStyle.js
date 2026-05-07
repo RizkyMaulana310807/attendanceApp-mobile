@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   streakDaysProgressContainer: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
   },
   streakAbsent: {
     width: 50,
@@ -185,6 +185,29 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: "bold",
     color: "#F7FFF7",
+  },
+  cardProgressContainer: {
+    display: "flex",
+    flexDirection: "row",
+    textAlign: "center",
+    borderWidth: 4,
+    borderRadius: 10,
+    marginHorizontal: 35,
+    padding: 20,
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+  progressTextContainer: {
+    fontSize: 12,
+    fontFamily: "Quicksand",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 5,
+  },
+  separator: {
+    width: 2,
+    height: "85%",
+    backgroundColor: "rgba(0,0,0,0.1)",
   },
 });
 
