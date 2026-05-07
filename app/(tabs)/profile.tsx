@@ -35,36 +35,39 @@ export default function profile() {
         }}
         resizeMode="contain"
       />
-      {/* Card Photo Profile */}
-      <ProfileCard user_name={dataUser.name} user_role={dataUser.role} />
-      {/* Card Streak */}
-      <StreakCard streak_total={10} />
-      {/* Progress Card */}
-      <View style={styles.cardProgressContainer}>
-        {/* Hours total */}
-        <View style={styles.progressTextContainer}>
-          <CircleProgress progress={dataProgress.totalHours} />
-          <Text>Hours Total</Text>
+
+      <View style={styles.bodyContainer}>
+        {/* Card Photo Profile */}
+        <ProfileCard user_name={dataUser.name} user_role={dataUser.role} />
+        {/* Card Streak */}
+        <StreakCard streak_total={10} />
+        {/* Progress Card */}
+        <View style={styles.cardProgressContainer}>
+          {/* Hours total */}
+          <View style={styles.progressTextContainer}>
+            <CircleProgress progress={dataProgress.totalHours} />
+            <Text>Hours Total</Text>
+          </View>
+
+          {/* Separator */}
+          <View style={styles.separator} />
+
+          {/* Total present */}
+          <View style={styles.progressTextContainer}>
+            <CircleProgress progress={dataProgress.progress} />
+            <Text>Total Present</Text>
+          </View>
+
+          {/* Separator */}
+          <View style={styles.separator} />
+
+          {/* Task Complete */}
+          <View style={styles.progressTextContainer}>
+            <CircleProgress progress={dataProgress.taskCompleted} />
+            <Text>Task Complete</Text>
+          </View>
         </View>
-
-        {/* Separator */}
-        <View style={styles.separator} />
-
-        {/* Total present */}
-        <View style={styles.progressTextContainer}>
-          <CircleProgress progress={dataProgress.progress} />
-          <Text>Total Present</Text>
-        </View>
-
-        {/* Separator */}
-        <View style={styles.separator} />
-
-        {/* Task Complete */}
-        <View style={styles.progressTextContainer}>
-          <CircleProgress progress={dataProgress.taskCompleted} />
-          <Text>Task Complete</Text>
-        </View>
-      </View>{" "}
+      </View>
     </View>
   );
 

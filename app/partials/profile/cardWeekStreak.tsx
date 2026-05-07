@@ -36,22 +36,16 @@ export const StreakCard: React.FC<StreakCardProps> = ({ streak_total }) => {
         <View style={styles.actionButtonContainer}>
           {/* Previous Week Button */}
           <View style={styles.streakWeekActionButton}>
-            {" "}
-            <Ionicons
-              name="chevron-back-outline"
-              size={35}
-              color="#F7FFF7"
-            />{" "}
+            <Ionicons name="chevron-back-outline" size={20} color="#F7FFF7" />
           </View>
 
           {/* Next Week Button */}
           <View style={styles.streakWeekActionButton}>
-            {" "}
             <Ionicons
               name="chevron-forward-outline"
-              size={35}
+              size={20}
               color="#F7FFF7"
-            />{" "}
+            />
           </View>
         </View>
 
@@ -59,7 +53,7 @@ export const StreakCard: React.FC<StreakCardProps> = ({ streak_total }) => {
         <View style={styles.streakCounterContainer}>
           <Image
             source={require("@/assets/images/StreakCounter.png")}
-            style={{ width: 75, height: 75 }}
+            style={{ width: 50, height: 50 }}
           />
           <Text style={styles.streakCounterText}>{streak_total}</Text>
         </View>
