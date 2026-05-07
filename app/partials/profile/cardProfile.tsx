@@ -36,7 +36,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
       {/* Account Settings */}
       <View style={styles.settingContainer}>
         <View style={styles.settingsButton}>
-          <Ionicons name="cog-outline" size={40} color="#0F172A" />
+          <Ionicons name="cog-outline" size={40} color="#FFFFFF" />
         </View>
       </View>
     </View>

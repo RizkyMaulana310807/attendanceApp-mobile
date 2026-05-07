@@ -14,7 +14,7 @@ export default function CircleProgress({
   progress,
   size = 80,
   width = 8,
-  color = "#7CFC00",
+  color = "#84CC16",
   backgroundColor = "#D9D9D9",
 }: CircleProgressProps) {
   return (
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: "Quicksand",
     fontWeight: "bold",
-    textShadowColor: "#2F4F00",
+    textShadowColor: "#84CC16",
     textShadowOffset: {
       width: 1,
       height: 1,
