@@ -23,30 +23,40 @@ export default function ProfileScreen() {
     taskCompleted: 60,
   };
 
-  const renderBody = () => (
-    <ScrollView
-      contentContainerStyle={{
+  return (
+    <View
+      style={{
+        flex: 1,
         backgroundColor: "#F7FFF7",
-        paddingBottom: 120,
       }}
-      showsVerticalScrollIndicator={false}
     >
-      {/* Background Banner */}
+      {/* STICKY BANNER */}
       <Image
-        source={require("../../assets/images/ProfileBanner.png")}
+        source={require("@/assets/images/ProfileBanner.png")}
         style={{
           position: "absolute",
           top: -60,
           width: "100%",
           aspectRatio: 16 / 9,
+          zIndex: 1,
         }}
         resizeMode="contain"
       />
 
-      {/* Back Button */}
+      {/* BACK BUTTON */}
       <TouchableOpacity
-        style={styles.circleButton}
         activeOpacity={0.7}
+        style={[
+          styles.circleButton,
+          {
+            position: "absolute",
+            top: 60,
+            left: 25,
+
+            zIndex: 20,
+            elevation: 20,
+          },
+        ]}
         onPress={() => {
           console.log("Back button clicked");
         }}
@@ -54,52 +64,71 @@ export default function ProfileScreen() {
         <Ionicons name="arrow-back-outline" size={32} color="#FFFFFF" />
       </TouchableOpacity>
 
-      {/* Main Body */}
-      <View style={styles.bodyContainer}>
-        {/* Profile */}
-        <Text style={styles.cardHeader}>Profile</Text>
+      {/* CONTENT LAYER */}
+      <View
+        style={{
+          flex: 1,
+          zIndex: 10,
+          elevation: 10,
+        }}
+      >
+        <ScrollView
+          contentContainerStyle={{
+            paddingBottom: 120,
+          }}
+          showsVerticalScrollIndicator={false}
+          bounces={true}
+          overScrollMode="never"
+          scrollEventThrottle={16}
+          decelerationRate="fast"
+          removeClippedSubviews={true}
+        >
+          {/* MAIN BODY */}
+          <View style={styles.bodyContainer}>
+            {/* PROFILE */}
+            <Text style={styles.cardHeader}>Profile</Text>
 
-        <ProfileCard user_name={dataUser.name} user_role={dataUser.role} />
+            <ProfileCard user_name={dataUser.name} user_role={dataUser.role} />
 
-        {/* Streak */}
-        <Text style={styles.cardHeader}>Streak Progress</Text>
+            {/* STREAK */}
+            <Text style={styles.cardHeader}>Streak Progress</Text>
 
-        <StreakCard streak_total={20} />
+            <StreakCard streak_total={20} />
 
-        {/* Mission */}
-        <Text style={styles.cardHeader}>Mission</Text>
+            {/* MISSION */}
+            <Text style={styles.cardHeader}>Mission</Text>
 
-        <View style={styles.cardProgressContainer}>
-          {/* Hours Total */}
-          <View style={styles.progressTextContainer}>
-            <CircleProgress progress={dataProgress.totalHours} />
+            <View style={styles.cardProgressContainer}>
+              {/* HOURS */}
+              <View style={styles.progressTextContainer}>
+                <CircleProgress progress={dataProgress.totalHours} />
 
-            <Text>Hours Total</Text>
+                <Text>Hours Total</Text>
+              </View>
+
+              {/* SEPARATOR */}
+              <View style={styles.separator} />
+
+              {/* PRESENT */}
+              <View style={styles.progressTextContainer}>
+                <CircleProgress progress={dataProgress.progress} />
+
+                <Text>Total Present</Text>
+              </View>
+
+              {/* SEPARATOR */}
+              <View style={styles.separator} />
+
+              {/* TASK */}
+              <View style={styles.progressTextContainer}>
+                <CircleProgress progress={dataProgress.taskCompleted} />
+
+                <Text>Task Complete</Text>
+              </View>
+            </View>
           </View>
-
-          {/* Separator */}
-          <View style={styles.separator} />
-
-          {/* Total Present */}
-          <View style={styles.progressTextContainer}>
-            <CircleProgress progress={dataProgress.progress} />
-
-            <Text>Total Present</Text>
-          </View>
-
-          {/* Separator */}
-          <View style={styles.separator} />
-
-          {/* Task Completed */}
-          <View style={styles.progressTextContainer}>
-            <CircleProgress progress={dataProgress.taskCompleted} />
-
-            <Text>Task Complete</Text>
-          </View>
-        </View>
+        </ScrollView>
       </View>
-    </ScrollView>
+    </View>
   );
-
-  return renderBody();
 }
