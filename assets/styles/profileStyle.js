@@ -1,232 +1,286 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+const { width, height } = Dimensions.get("window");
+
+const guidelineBaseWidth = 375;
+const guidelineBaseHeight = 812;
+
+const scale = (size) => {
+  return (width / guidelineBaseWidth) * size;
+};
+
+const verticalScale = (size) => {
+  return (height / guidelineBaseHeight) * size;
+};
+
+const moderateScale = (size, factor = 0.5) => {
+  return size + (scale(size) - size) * factor;
+};
 
 const styles = StyleSheet.create({
   bodyContainer: {
-    marginTop: 125,
-    display: "flex",
+    flex: 1,
+    marginTop: verticalScale(125),
     flexDirection: "column",
-    gap: 10,
-    height: "100%",
+    gap: scale(10),
   },
+
   profileCardContainer: {
     backgroundColor: "#F7FFF7",
-    borderRadius: 10,
+    borderRadius: scale(10),
     zIndex: 100,
-    padding: 20,
-    display: "flex",
+    padding: scale(20),
     flexDirection: "row",
     justifyContent: "space-around",
-    gap: 12,
-    borderWidth: 4,
+    gap: scale(12),
+    borderWidth: scale(4),
     borderColor: "#0F172A",
-    marginHorizontal: 35,
+    width: "85%",
+    alignSelf: "center",
   },
+
   profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 100,
-    borderWidth: 4,
+    width: scale(100),
+    height: scale(100),
+    borderRadius: scale(100),
+    borderWidth: scale(4),
   },
+
   profileImageContainer: {
     position: "relative",
   },
+
   userStatusCircle: {
     position: "absolute",
-    width: 25,
-    height: 25,
+    width: scale(25),
+    height: scale(25),
     backgroundColor: "#84CC16",
-    borderRadius: 100,
+    borderRadius: scale(100),
     borderColor: "#0F172A",
-    borderWidth: 4,
-    bottom: 5,
+    borderWidth: scale(4),
+    bottom: scale(5),
+    right: scale(2),
   },
+
   UserNameContainer: {
-    display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     flex: 1,
   },
+
   userNameText: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontFamily: "Quicksand",
     fontWeight: "bold",
   },
+
   userRoleText: {
-    fontSize: 15,
+    fontSize: moderateScale(15),
     fontFamily: "Quicksand",
-    fontWeight: "regular",
+    fontWeight: "400",
   },
+
   settingContainer: {
-    display: "flex",
+    justifyContent: "center",
   },
+
   settingsButton: {
     backgroundColor: "#84CC16",
-    paddingVertical: 3,
-    paddingHorizontal: 4,
-    borderRadius: 999,
-    borderWidth: 4,
+    paddingVertical: verticalScale(3),
+    paddingHorizontal: scale(4),
+    borderRadius: scale(999),
+    borderWidth: scale(4),
     borderColor: "#0F172A",
   },
+
   numberOfWeekText: {
     fontFamily: "Fredoka",
-    fontSize: 64,
+    fontSize: moderateScale(64),
     fontWeight: "bold",
     color: "#84CC16",
-    textShadow: "black 2px 2px 1px",
+    textShadowColor: "black",
+    textShadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    textShadowRadius: 1,
   },
 
   ordinalIndicatorText: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontFamily: "Fredoka",
     fontWeight: "bold",
     color: "#84CC16",
-    textShadow: "black 2px 2px 1px",
+    textShadowColor: "black",
+    textShadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    textShadowRadius: 1,
   },
+
   numberOfWeekContainer: {
-    display: "flex",
     flexDirection: "row",
   },
+
   dateDisplayContainer: {
-    display: "flex",
     flexDirection: "column",
     justifyContent: "center",
   },
+
   streakWeekDisplayContainer: {
-    display: "flex",
     flexDirection: "row",
   },
+
   weekNameText: {
     fontFamily: "Quicksand",
     fontWeight: "bold",
-    fontSize: 14,
+    fontSize: moderateScale(14),
   },
+
   dateInfoText: {
     fontFamily: "Quicksand",
-    fontWeight: "regular",
-    fontSize: 10,
+    fontWeight: "400",
+    fontSize: moderateScale(10),
   },
+
   streakWeekActionButton: {
-    width: 35,
-    height: 35,
+    width: scale(35),
+    height: scale(35),
     backgroundColor: "#84CC16",
-    borderWidth: 4,
+    borderWidth: scale(4),
     borderColor: "#0F172A",
-    borderRadius: 100,
-    display: "flex",
+    borderRadius: scale(100),
     alignItems: "center",
     justifyContent: "center",
   },
+
   actionButtonContainer: {
-    display: "flex",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    gap: 10,
+    gap: scale(10),
   },
+
   StreakDataContainer: {
-    display: "flex",
     flexDirection: "row",
     width: "100%",
     justifyContent: "space-around",
-    gap: 5,
+    gap: scale(5),
   },
+
   streakCounterText: {
     fontFamily: "Quicksand",
     position: "absolute",
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: "bold",
     color: "white",
   },
+
   streakCounterContainer: {
     position: "relative",
     alignItems: "center",
     justifyContent: "center",
   },
+
   cardStreakContainer: {
-    display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    gap: 20,
-    marginHorizontal: 35,
-    borderWidth: 4,
+    gap: scale(20),
+    width: "85%",
+    alignSelf: "center",
+    borderWidth: scale(4),
     borderColor: "#0F172A",
-    borderRadius: 10,
-    padding: 20,
+    borderRadius: scale(10),
+    padding: scale(20),
   },
+
   streakDaysProgressContainer: {
-    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
+
   streakAbsent: {
-    display: "flex",
-    width: 40,
-    height: 40,
-    borderRadius: 100,
-    borderWidth: 4,
+    width: scale(40),
+    height: scale(40),
+    borderRadius: scale(100),
+    borderWidth: scale(4),
     borderColor: "#ff353c80",
     backgroundColor: "#C1292E",
     justifyContent: "center",
     alignItems: "center",
-    textAlign: "center",
   },
+
   streakPresent: {
-    display: "flex",
-    width: 40,
-    height: 40,
-    borderRadius: 100,
-    borderWidth: 4,
+    width: scale(40),
+    height: scale(40),
+    borderRadius: scale(100),
+    borderWidth: scale(4),
     borderColor: "#84CC1680",
     backgroundColor: "#84CC16",
     justifyContent: "center",
     alignItems: "center",
-    textAlign: "center",
   },
+
   streakSick: {
-    display: "flex",
-    width: 40,
-    height: 40,
-    borderRadius: 100,
-    borderWidth: 4,
+    width: scale(40),
+    height: scale(40),
+    borderRadius: scale(100),
+    borderWidth: scale(4),
     borderColor: "#627C8580",
     backgroundColor: "#627C85",
     justifyContent: "center",
     alignItems: "center",
-    textAlign: "center",
   },
+
   alphabetStreakProgress: {
-    display: "flex",
     fontFamily: "Quicksand",
-    fontSize: 24,
+    fontSize: moderateScale(24),
     fontWeight: "bold",
     color: "#F7FFF7",
-    alignItems: "center",
-    justifyContent: "center",
     textAlign: "center",
   },
+
   cardProgressContainer: {
-    display: "flex",
     flexDirection: "row",
-    textAlign: "center",
-    borderWidth: 4,
-    borderRadius: 10,
-    marginHorizontal: 35,
-    padding: 20,
+    borderWidth: scale(4),
+    borderRadius: scale(10),
+    width: "85%",
+    alignSelf: "center",
+    padding: scale(20),
     alignItems: "center",
     justifyContent: "space-evenly",
   },
+
   progressTextContainer: {
-    fontSize: 12,
-    fontFamily: "Quicksand",
     alignItems: "center",
     justifyContent: "center",
-    gap: 5,
+    gap: scale(5),
   },
+
   separator: {
-    width: 2,
+    width: scale(2),
     height: "85%",
     backgroundColor: "rgba(0,0,0,0.1)",
+  },
+  cardHeader: {
+    paddingHorizontal: scale(30),
+    fontFamily: "Quicksand",
+    fontSize: moderateScale(15),
+    fontWeight: "bold",
+  },
+  circleButton: {
+    width: scale(50),
+    height: scale(50),
+    backgroundColor: "#84CC16",
+    borderRadius: "100%",
+    zIndex: 100,
+    borderWidth: 4,
+    justifyContent: "center",
+    alignItems: "center",
+    top: scale(85),
+    left: scale(25),
   },
 });
 

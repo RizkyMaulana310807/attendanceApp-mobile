@@ -1,30 +1,37 @@
-import { ProfileCard } from "@/app/partials/profile/cardProfile";
-import styles from "@/assets/styles/profileStyle";
 import React from "react";
-import { Image, Text, View } from "react-native";
-import { StreakCard } from "../partials/profile/cardWeekStreak";
-import CircleProgress from "../partials/profile/progressCard";
-export default function profile() {
-  // Menggunakan Template String untuk menyusun JSX yang bersih dan bebas spasi acak
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+
+import { Ionicons } from "@expo/vector-icons";
+
+import styles from "@/assets/styles/profileStyle";
+
+// COMPONENT
+import { ProfileCard } from "@/app/partials/profile/cardProfile";
+import { StreakCard } from "@/app/partials/profile/cardWeekStreak";
+import CircleProgress from "@/app/partials/profile/progressCard";
+
+export default function ProfileScreen() {
+  // Dummy Data
   const dataUser = {
     name: "Rizky Maulana",
-    role: "Senior Developer",
+    role: "UI Designer",
   };
+
   const dataProgress = {
-    totalHours: Math.round((8 / 8) * 100),
-    progress: Math.round((60 / 365) * 100),
-    taskCompleted: Math.round((2 / 3) * 100),
+    totalHours: 75,
+    progress: 90,
+    taskCompleted: 60,
   };
 
   const renderBody = () => (
-    <View
-      style={{
-        height: "100%",
+    <ScrollView
+      contentContainerStyle={{
         backgroundColor: "#F7FFF7",
-        position: "relative",
+        paddingBottom: 120,
       }}
+      showsVerticalScrollIndicator={false}
     >
-      {/* Pattern Profile Banner */}
+      {/* Background Banner */}
       <Image
         source={require("../../assets/images/ProfileBanner.png")}
         style={{
@@ -36,39 +43,62 @@ export default function profile() {
         resizeMode="contain"
       />
 
+      {/* Back Button */}
+      <TouchableOpacity
+        style={styles.circleButton}
+        activeOpacity={0.7}
+        onPress={() => {
+          console.log("Back button clicked");
+        }}
+      >
+        <Ionicons name="arrow-back-outline" size={32} color="#FFFFFF" />
+      </TouchableOpacity>
+
+      {/* Main Body */}
       <View style={styles.bodyContainer}>
-        {/* Card Photo Profile */}
+        {/* Profile */}
+        <Text style={styles.cardHeader}>Profile</Text>
+
         <ProfileCard user_name={dataUser.name} user_role={dataUser.role} />
-        {/* Card Streak */}
-        <StreakCard streak_total={10} />
-        {/* Progress Card */}
+
+        {/* Streak */}
+        <Text style={styles.cardHeader}>Streak Progress</Text>
+
+        <StreakCard streak_total={20} />
+
+        {/* Mission */}
+        <Text style={styles.cardHeader}>Mission</Text>
+
         <View style={styles.cardProgressContainer}>
-          {/* Hours total */}
+          {/* Hours Total */}
           <View style={styles.progressTextContainer}>
             <CircleProgress progress={dataProgress.totalHours} />
+
             <Text>Hours Total</Text>
           </View>
 
           {/* Separator */}
           <View style={styles.separator} />
 
-          {/* Total present */}
+          {/* Total Present */}
           <View style={styles.progressTextContainer}>
             <CircleProgress progress={dataProgress.progress} />
+
             <Text>Total Present</Text>
           </View>
 
           {/* Separator */}
           <View style={styles.separator} />
 
-          {/* Task Complete */}
+          {/* Task Completed */}
           <View style={styles.progressTextContainer}>
             <CircleProgress progress={dataProgress.taskCompleted} />
+
             <Text>Task Complete</Text>
           </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 
   return renderBody();
