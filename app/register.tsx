@@ -1,4 +1,5 @@
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Stack } from "expo-router";
 import React, { useState } from "react";
 import {
   SafeAreaView,
@@ -14,6 +15,8 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Stack.Screen options={{ headerShown: false }} />
+
       {/* Dekorasi kanan atas */}
       <View style={styles.topDecoration}>
         <View style={[styles.line, { backgroundColor: "#A3D84C" }]} />
@@ -70,7 +73,6 @@ export default function LoginScreen() {
     </SafeAreaView>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
