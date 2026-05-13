@@ -17,6 +17,7 @@ export default function LoginScreen() {
 
   const handleLogin = () => {
     Alert.alert("data login", `email: ${email}\npassword: ${password}`);
+    console.log(`email: ${email}\npassword: ${password}`);
   };
 
   return (
@@ -50,21 +51,23 @@ export default function LoginScreen() {
 
       {/* Form Body */}
       <View>
-        <Text>Email</Text>
+        <Text style={styles.labelTextInputField}>Email</Text>
         <TextInput
-          placeholder="Masukan Email ..."
+          style={styles.textInputField}
+          placeholder="your_email@gmail.com"
           value={email}
           onChangeText={setEmail}
         />
-        <Text>Password</Text>
+        <Text style={styles.labelTextInputField}>Password</Text>
         <TextInput
-          placeholder="Masukan Password ..."
+          style={styles.textInputField}
+          placeholder="your_password123#"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
         />
-        <TouchableOpacity onPress={handleLogin}>
-          <Text>Submit</Text>
+        <TouchableOpacity onPress={handleLogin} style={styles.submitButton}>
+          <Text style={styles.submitButtonLabel}>Submit</Text>
         </TouchableOpacity>
       </View>
 
