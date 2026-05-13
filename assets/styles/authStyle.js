@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     padding: scale(14),
     borderRadius: scale(10),
     marginHorizontal: scale(35),
-    marginVertical: scale(24),
+    marginVertical: scale(8),
   },
   submitButtonLabel: {
     fontFamily: "fredoka",
@@ -78,6 +78,21 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: scale(20),
     color: "#F7FFF7",
+  },
+  loginOptionContainer: {
+    display: "flex",
+    flexDirection: "row",
+    marginHorizontal: scale(35),
+    justifyContent: "space-between",
+    paddingVertical: scale(20),
+    alignItems: "center",
+    textAlign: "center",
+  },
+  rememberMeOption: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: scale(4),
   },
 });
 
