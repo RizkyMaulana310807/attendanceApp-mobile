@@ -94,6 +94,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: scale(4),
   },
+  formBody: {
+    gap: scale(8),
+  },
+  separator: {
+    borderWidth: scale(0.5),
+    width: "20%",
+  },
+  separatorContainer: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: scale(12),
+  },
 });
 
 export default styles;

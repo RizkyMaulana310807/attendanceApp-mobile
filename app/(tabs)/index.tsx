@@ -6,7 +6,7 @@ export default function Index() {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      router.replace("/register");
+      router.replace("/home");
     }, 0);
 
     return () => clearTimeout(timeout);

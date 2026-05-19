@@ -57,30 +57,36 @@ export default function LoginScreen() {
       </View>
 
       {/* Form Body */}
-      <View>
-        <Text style={styles.labelTextInputField}>Email</Text>
-        <TextInput
-          style={styles.textInputField}
-          placeholder="your_email@gmail.com"
-          value={email}
-          onChangeText={setEmail}
-        />
-        <Text style={styles.labelTextInputField}>Password</Text>
-        <TextInput
-          style={styles.textInputField}
-          placeholder="your_password123#"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-        <Text style={styles.labelTextInputField}>Confirm Password</Text>
-        <TextInput
-          style={styles.textInputField}
-          placeholder="your_password123#"
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          secureTextEntry
-        />
+      <View style={styles.formBody}>
+        <View>
+          <Text style={styles.labelTextInputField}>Email</Text>
+          <TextInput
+            style={styles.textInputField}
+            placeholder="your_email@gmail.com"
+            value={email}
+            onChangeText={setEmail}
+          />
+        </View>
+        <View>
+          <Text style={styles.labelTextInputField}>Password</Text>
+          <TextInput
+            style={styles.textInputField}
+            placeholder="your_password123#"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
+        </View>
+        <View>
+          <Text style={styles.labelTextInputField}>Confirm Password</Text>
+          <TextInput
+            style={styles.textInputField}
+            placeholder="your_password123#"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            secureTextEntry
+          />
+        </View>
 
         <View style={styles.loginOptionContainer}>
           {/* <Pressable

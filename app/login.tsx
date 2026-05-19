@@ -54,22 +54,26 @@ export default function LoginScreen() {
       </View>
 
       {/* Form Body */}
-      <View>
-        <Text style={styles.labelTextInputField}>Email</Text>
-        <TextInput
-          style={styles.textInputField}
-          placeholder="your_email@gmail.com"
-          value={email}
-          onChangeText={setEmail}
-        />
-        <Text style={styles.labelTextInputField}>Password</Text>
-        <TextInput
-          style={styles.textInputField}
-          placeholder="your_password123#"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
+      <View style={styles.formBody}>
+        <View>
+          <Text style={styles.labelTextInputField}>Email</Text>
+          <TextInput
+            style={styles.textInputField}
+            placeholder="your_email@gmail.com"
+            value={email}
+            onChangeText={setEmail}
+          />
+        </View>
+        <View>
+          <Text style={styles.labelTextInputField}>Password</Text>
+          <TextInput
+            style={styles.textInputField}
+            placeholder="your_password123#"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
+        </View>
 
         <View style={styles.loginOptionContainer}>
           <Pressable
@@ -80,6 +84,13 @@ export default function LoginScreen() {
             <Text>remember me</Text>
           </Pressable>
           <Text>forgot Password?</Text>
+        </View>
+
+        {/* separator */}
+        <View style={styles.separatorContainer}>
+          <View style={styles.separator}></View>
+          <Text>Or Login With</Text>
+          <View style={styles.separator}></View>
         </View>
 
         <TouchableOpacity onPress={handleLogin} style={styles.submitButton}>
