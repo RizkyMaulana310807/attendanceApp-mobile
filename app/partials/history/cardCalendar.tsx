@@ -113,35 +113,20 @@ export default function CardCalendar() {
             }}
             theme={{
               backgroundColor: "#F7FFF7",
-
               calendarBackground: "#F7FFF7",
-
               textSectionTitleColor: "#0F172A",
-
               selectedDayBackgroundColor: "#84CC16",
-
               selectedDayTextColor: "#FFFFFF",
-
               todayTextColor: "#84CC16",
-
               dayTextColor: "#0F172A",
-
               textDisabledColor: "#C7C7C7",
-
               monthTextColor: "#0F172A",
-
               arrowColor: "#84CC16",
-
               textDayFontFamily: "Quicksand",
-
               textMonthFontFamily: "Fredoka",
-
               textDayHeaderFontFamily: "Fredoka",
-
               textDayFontWeight: "bold",
-
               textMonthFontWeight: "bold",
-
               textDayHeaderFontWeight: "bold",
             }}
             style={styles.calendar}
@@ -207,6 +192,7 @@ export default function CardCalendar() {
           contentContainerStyle={styles.historyContainer}
           scrollEventThrottle={16}
           nestedScrollEnabled={true}
+          style={styles.attendanceHistoryWrapper}
         >
           {attendanceData.map((item) => {
             const isActive = selectedDate === item.date;

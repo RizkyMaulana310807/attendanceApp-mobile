@@ -136,265 +136,134 @@ const styles = StyleSheet.create({
     borderStyle: "dashed",
   },
   todayText: { color: "#84CC16" },
-  historyContainer: {
-    gap: scale(16),
-
-    paddingBottom: verticalScale(100),
-  },
-
+  historyContainer: { gap: scale(16), paddingBottom: verticalScale(100) },
   historyCard: {
     flexDirection: "row",
-
     alignItems: "center",
-
     backgroundColor: "#F7FFF7",
-
     borderWidth: scale(4),
-
     borderColor: "#0F172A",
-
     borderRadius: scale(20),
-
     padding: scale(12),
-
     gap: scale(14),
   },
-
-  activeHistoryCard: {
-    backgroundColor: "#84CC16",
-  },
-
+  activeHistoryCard: { backgroundColor: "#84CC16" },
   numberContainer: {
     width: scale(80),
-
     height: scale(80),
-
     backgroundColor: "#84CC16",
-
     borderRadius: scale(10),
-
     justifyContent: "center",
-
     alignItems: "center",
   },
-
-  activeNumberContainer: {
-    backgroundColor: "#A3E635",
-  },
-
+  activeNumberContainer: { backgroundColor: "#A3E635" },
   numberText: {
     fontSize: moderateScale(48),
-
     fontFamily: "Fredoka",
-
     fontWeight: "bold",
-
     color: "#FFFFFF",
-
     textShadowColor: "rgba(0,0,0,0.2)",
-
-    textShadowOffset: {
-      width: 0,
-      height: 3,
-    },
-
+    textShadowOffset: { width: 0, height: 3 },
     textShadowRadius: 3,
   },
-
   infoContainer: {
     flex: 1,
-
     flexDirection: "row",
-
     justifyContent: "space-between",
-
     alignItems: "center",
   },
-
-  infoColumn: {
-    flex: 1,
-
-    alignItems: "center",
-  },
-
+  infoColumn: { flex: 1, alignItems: "center" },
   infoTitle: {
     fontSize: moderateScale(20),
-
     fontFamily: "Fredoka",
-
     fontWeight: "bold",
-
     color: "#0F172A",
   },
-
   infoSubtitle: {
     fontSize: moderateScale(11),
-
     fontFamily: "Quicksand",
-
     color: "#0F172A",
   },
-
   line: {
     width: scale(1),
-
     height: "80%",
-
     backgroundColor: "#0F172A",
-
     opacity: 0.4,
   },
-
-  selectedContainer: {
-    backgroundColor: "#84CC16",
-
-    borderColor: "#84CC16",
-  },
-
-  selectedText: {
-    color: "#FFFFFF",
-  },
+  selectedContainer: { backgroundColor: "#84CC16", borderColor: "#84CC16" },
+  selectedText: { color: "#FFFFFF" },
   historyWrapper: {
     borderWidth: scale(4),
-
     borderColor: "#0F172A",
-
     borderRadius: scale(24),
-
     padding: scale(16),
-
     gap: scale(16),
-
     backgroundColor: "#F7FFF7",
   },
-
   historyHeading: {
     fontSize: moderateScale(24),
-
     fontFamily: "Fredoka",
-
     fontWeight: "bold",
-
     color: "#0F172A",
   },
-
-  historyContainer: {
-    gap: scale(16),
-
-    paddingBottom: verticalScale(20),
-  },
-
+  historyContainer: { gap: scale(16), paddingBottom: verticalScale(20) },
   historyCard: {
     flexDirection: "row",
-
     alignItems: "center",
-
     backgroundColor: "#F7FFF7",
-
     borderWidth: scale(4),
-
     borderColor: "#0F172A",
-
     borderRadius: scale(20),
-
     padding: scale(12),
-
     gap: scale(14),
   },
-
-  activeHistoryCard: {
-    backgroundColor: "#84CC16",
-  },
-
+  activeHistoryCard: { backgroundColor: "#84CC16" },
   numberContainer: {
     width: scale(80),
-
     height: scale(80),
-
     backgroundColor: "#84CC16",
-
     borderRadius: scale(12),
-
     justifyContent: "center",
-
     alignItems: "center",
   },
-
-  activeNumberContainer: {
-    backgroundColor: "#FFFFFF",
-  },
-
+  activeNumberContainer: { backgroundColor: "#FFFFFF" },
   numberText: {
     fontSize: moderateScale(48),
-
     fontFamily: "Fredoka",
-
     fontWeight: "bold",
-
     color: "#FFFFFF",
-
     textShadowColor: "rgba(0,0,0,0.2)",
-
-    textShadowOffset: {
-      width: 0,
-      height: 3,
-    },
-
+    textShadowOffset: { width: 0, height: 3 },
     textShadowRadius: 3,
   },
-
-  activeNumberText: {
-    color: "#84CC16",
-  },
-
+  activeNumberText: { color: "#84CC16" },
   infoContainer: {
     flex: 1,
-
     flexDirection: "row",
-
     justifyContent: "space-between",
-
     alignItems: "center",
   },
-
-  infoColumn: {
-    flex: 1,
-
-    alignItems: "center",
-  },
-
+  infoColumn: { flex: 1, alignItems: "center" },
   infoTitle: {
     fontSize: moderateScale(18),
-
     fontFamily: "Fredoka",
-
     fontWeight: "bold",
-
     color: "#0F172A",
   },
-
   infoSubtitle: {
     fontSize: moderateScale(11),
-
     fontFamily: "Quicksand",
-
     color: "#0F172A",
   },
-
   line: {
     width: scale(1),
-
     height: "80%",
-
     backgroundColor: "#0F172A",
-
     opacity: 0.4,
   },
-  historyListWrapper: {
-    height: scale(320),
-
-    overflow: "hidden",
+  historyListWrapper: { height: scale(320), overflow: "hidden" },
+  attendanceHistoryWrapper: {
+    height: scale(250),
   },
 });
-
 export default styles;
