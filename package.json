@@ -9,7 +9,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "server": "nodemon server.js"
+    "server": "nodemon src/server.js"
   },
   "dependencies": {
     "@expo-google-fonts/fredoka": "^0.4.1",
