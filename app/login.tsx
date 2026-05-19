@@ -6,7 +6,7 @@ import {
   Alert,
   Image,
   Pressable,
-  SafeAreaView,
+  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
@@ -19,12 +19,13 @@ export default function LoginScreen() {
   const [checked, setChecked] = useState(false);
 
   const handleLogin = () => {
+    if (!password || !email) return;
     Alert.alert("data login", `email: ${email}\npassword: ${password}`);
-    console.log(`email: ${email}\npassword: ${password}`);
+    alert(`email: ${email}\npassword: ${password}`);
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
 
       {/* Header Atas */}
@@ -87,6 +88,6 @@ export default function LoginScreen() {
       </View>
 
       {/* Footer */}
-    </SafeAreaView>
+    </ScrollView>
   );
 }
