@@ -1,10 +1,82 @@
 import styles from "@/assets/styles/homeStyle";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
-import { Image, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Image, Pressable, Text, View } from "react-native";
 
 export default function Home() {
+  const [checkIn, setCheckin] = useState("");
+  const [checkOut, setCheckOut] = useState("");
+  const [total, setTotal] = useState("");
+  const now = new Date();
+
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    let timeout: number;
+
+    const updateClock = () => {
+      const now = new Date();
+      setTime(now);
+
+      // Hitung sisa waktu ke menit berikutnya
+      const seconds = now.getSeconds();
+      const milliseconds = now.getMilliseconds();
+
+      const delay = (60 - seconds) * 1000 - milliseconds;
+
+      timeout = setTimeout(updateClock, delay);
+    };
+
+    updateClock();
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  const formatDate = (date: Date) => {
+    const days = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "Mei",
+      "Jun",
+      "Jul",
+      "Agu",
+      "Sep",
+      "Okt",
+      "Nov",
+      "Des",
+    ];
+
+    const dayName = days[date.getDay()];
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+
+    return `${dayName}, ${day} ${month}`;
+  };
+
+  const formattedTime = time
+    .toLocaleTimeString("id-ID", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    })
+    .replaceAll(".", ":");
+
+  const absentClick = () => {
+    const formattedTime = now
+      .toLocaleTimeString("id-ID", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })
+      .replaceAll(".", ":");
+    setCheckin(formattedTime);
+  };
+
   return (
     <View style={styles.container}>
       <Image
@@ -15,7 +87,7 @@ export default function Home() {
       {/* Top Header Container */}
       <View style={styles.topHeaderContainer}>
         <View style={{ width: 50, height: 50 }}></View>
-        <Text style={styles.greetingText}>Welcome User</Text>
+        <Text style={styles.greetingText}>Halo User, Siap Untuk Bekerja?</Text>
         <Image
           source={{
             uri: "https://i.pinimg.com/1200x/e3/a1/44/e3a1446e603d77a85b6c14d479fe5243.jpg",
@@ -27,12 +99,14 @@ export default function Home() {
       <View style={styles.mainActivityContainer}>
         {/* Date And Time Info */}
         <View style={styles.dateTimeHeaderContainer}>
-          <Text style={styles.timeInfoMainActivity}>09:12 AM</Text>
-          <Text style={styles.dateInfoMainActivity}>Wed, 21 Des</Text>
+          <Text style={styles.timeInfoMainActivity}>{formattedTime} AM</Text>
+          <Text style={styles.dateInfoMainActivity}>
+            {formatDate(new Date())}
+          </Text>
         </View>
 
         {/* Circle Submit | Button For Submit Attendance */}
-        <View style={styles.buttonSubmitAttendance}>
+        <Pressable style={styles.buttonSubmitAttendance} onPress={absentClick}>
           <Image
             style={{ position: "absolute" }}
             source={require("../../assets/images/OutlineWavy.png")}
@@ -52,7 +126,7 @@ export default function Home() {
             <Ionicons name="hand-right-outline" size={100} color="#0F172A" />
             <Text style={styles.shiftText}>Morning Shift</Text>
           </LinearGradient>
-        </View>
+        </Pressable>
 
         {/* Location Info (Optional) */}
         <View style={styles.locationInfoContainer}>
@@ -67,7 +141,11 @@ export default function Home() {
         {/* Time checked-in */}
         <View>
           <Ionicons name="time-outline" size={60} color="#0F172A" />
-          <Text style={styles.footerTimeInfoText}>09:10 AM</Text>
+          {checkIn ? (
+            <Text style={styles.footerTimeInfoText}>{checkIn} AM</Text>
+          ) : (
+            <Text style={styles.footerTimeInfoText}>-- : -- AM</Text>
+          )}
           <Text style={styles.footerInfoText}>checked-in</Text>
         </View>
         {/* Time checked-out */}
