@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-    url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -24,6 +24,7 @@ model User {
   summaries           WeeklySummary[]
   approvedPermissions WorkPermission[]   @relation("ApprovedBy")
   permissions         WorkPermission[]
+  refreshTokens       RefreshToken[]
 
   @@map("users")
 }
@@ -149,4 +150,14 @@ enum WorkMode {
 enum PermissionType {
   WFH
   WFA
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

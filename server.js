@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 
 const app = express();
@@ -7,7 +8,7 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
   res.json({
-    message: "API Absensi jalan 🚀",
+    message: "API Absensi Cuy 🚀",
   });
 });
 

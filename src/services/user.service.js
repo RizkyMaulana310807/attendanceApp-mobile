@@ -1,23 +1,6 @@
-// const prisma = require("../config/prisma");
-
-// const getAllUsers = async () => {
-//   return await prisma.user.findMany({
-//     select: {
-//       id: true,
-//       nama: true,
-//       email: true,
-//       role: true,
-//       joinDate: true,
-//       createdAt: true,
-//     },
-//   });
-// };
-
-// module.exports = {
-//   getAllUsers,
-// };
-
 const prisma = require("../config/prisma");
+const bcrypt = require("bcrypt");
+const { generateAccessToken, generateRefreshToken } = require("../utils/jwt");
 
 const getAllUsers = async () => {
   return await prisma.user.findMany({
@@ -87,7 +70,55 @@ const deleteUser = async (id) => {
   });
 };
 
+const login = async (email, password) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (!user) {
+    throw new Error("User tidak ditemukan");
+  }
+
+  const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordMatch) {
+    throw new Error("Password salah");
+  }
+
+  // generate token
+  const accessToken = generateAccessToken(user);
+
+  const refreshToken = generateRefreshToken(user);
+
+  // expired refresh token
+  const expiresAt = new Date();
+  expiresAt.setDate(expiresAt.getDate() + 30);
+
+  // save refresh token
+  await prisma.refreshToken.create({
+    data: {
+      userId: user.id,
+      token: refreshToken,
+      expiresAt,
+    },
+  });
+
+  return {
+    user: {
+      id: user.id,
+      nama: user.nama,
+      email: user.email,
+      role: user.role,
+    },
+    accessToken,
+    refreshToken,
+  };
+};
+
 module.exports = {
+  login,
   getAllUsers,
   getUserById,
   createUser,
