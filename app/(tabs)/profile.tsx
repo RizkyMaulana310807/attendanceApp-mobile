@@ -1,4 +1,6 @@
-import React from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import React, { useEffect, useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -9,13 +11,33 @@ import styles from "@/assets/styles/profileStyle";
 import { ProfileCard } from "@/app/partials/profile/cardProfile";
 import { StreakCard } from "@/app/partials/profile/cardWeekStreak";
 import CircleProgress from "@/app/partials/profile/progressCard";
+import { router } from "expo-router";
 
 export default function ProfileScreen() {
   // Dummy Data
-  const dataUser = {
-    name: "Rizky Maulana",
-    role: "UI Designer",
+  const [user, setUser] = useState<any>(null);
+
+  const getLoginData = async () => {
+    try {
+      const userData = await AsyncStorage.getItem("user");
+
+      if (userData) {
+        const parsedUser = JSON.parse(userData);
+
+        const firstName = parsedUser.nama?.trim().split(" ")[0];
+
+        setUser({
+          ...parsedUser,
+          nama: firstName,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+  useEffect(() => {
+    getLoginData();
+  }, []);
 
   const dataProgress = {
     totalHours: 75,
@@ -88,7 +110,15 @@ export default function ProfileScreen() {
             {/* PROFILE */}
             <Text style={styles.cardHeader}>Profile</Text>
 
-            <ProfileCard user_name={dataUser.name} user_role={dataUser.role} />
+            <ProfileCard
+              user_name={user?.nama}
+              user_role={user?.role}
+              onLogout={async () => {
+                await AsyncStorage.clear();
+
+                router.replace("/login");
+              }}
+            />
 
             {/* STREAK */}
             <Text style={styles.cardHeader}>Streak Progress</Text>
