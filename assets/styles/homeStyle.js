@@ -1,4 +1,21 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+const { width, height } = Dimensions.get("window");
+
+const guidelineBaseWidth = 375;
+const guidelineBaseHeight = 812;
+
+const scale = (size) => {
+  return (width / guidelineBaseWidth) * size;
+};
+
+const verticalScale = (size) => {
+  return (height / guidelineBaseHeight) * size;
+};
+
+const moderateScale = (size, factor = 0.5) => {
+  return size + (scale(size) - size) * factor;
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -6,23 +23,30 @@ const styles = StyleSheet.create({
     backgroundColor: "#F7FFF7",
     justifyContent: "space-around",
   },
+  dummyProfile: {
+    width: scale(50),
+    height: scale(50),
+    borderRadius: scale(25),
+    borderWidth: scale(4),
+    borderColor: "transparent",
+  },
   profileImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    borderWidth: 4,
+    width: scale(50),
+    height: scale(50),
+    borderRadius: scale(25),
+    borderWidth: scale(4),
   },
   greetingText: {
     fontFamily: "Fredoka",
     color: "#0F172A",
-    fontSize: 20,
+    fontSize: moderateScale(16),
     fontWeight: "bold",
   },
   topHeaderContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 10,
+    padding: scale(10),
   },
   dateTimeHeaderContainer: {
     alignItems: "center",
@@ -30,13 +54,13 @@ const styles = StyleSheet.create({
   timeInfoMainActivity: {
     fontFamily: "Quicksand",
     color: "#0F172A",
-    fontSize: 36,
+    fontSize: moderateScale(36),
     fontWeight: "bold",
   },
   dateInfoMainActivity: {
     fontFamily: "Quicksand",
     color: "#0F172A",
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: "500",
   },
   buttonSubmitAttendance: {
@@ -52,13 +76,13 @@ const styles = StyleSheet.create({
   shiftText: {
     fontFamily: "Quicksand",
     color: "#0F172A",
-    fontSize: 15,
+    fontSize: moderateScale(15),
     marginTop: 8,
   },
   locationInfoText: {
     fontFamily: "Quicksand",
     color: "#0F172A",
-    fontSize: 15,
+    fontSize: moderateScale(15),
   },
   locationInfoContainer: {
     alignItems: "center",
@@ -69,20 +93,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    padding: 10,
+    padding: scale(10),
   },
   footerTimeInfoText: {
     fontFamily: "Quicksand",
     color: "#0F172A",
     textAlign: "center",
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: "bold",
   },
   footerInfoText: {
     fontFamily: "Quicksand",
     color: "#0F172A",
     textAlign: "center",
-    fontSize: 11,
+    fontSize: moderateScale(11),
   },
   mainActivityContainer: {
     display: "flex",

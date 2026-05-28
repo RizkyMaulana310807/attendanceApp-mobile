@@ -13,13 +13,19 @@ export default function Home() {
       const userData = await AsyncStorage.getItem("user");
 
       if (userData) {
-        setUser(JSON.parse(userData));
+        const parsedUser = JSON.parse(userData);
+
+        const firstName = parsedUser.nama?.trim().split(" ")[0];
+
+        setUser({
+          ...parsedUser,
+          nama: firstName,
+        });
       }
     } catch (error) {
       console.log(error);
     }
   };
-
   useEffect(() => {
     getLoginData();
   }, []);
@@ -105,7 +111,7 @@ export default function Home() {
 
       {/* Top Header Container */}
       <View style={styles.topHeaderContainer}>
-        <View style={{ width: 50, height: 50 }}></View>
+        <View style={styles.dummyProfile}></View>
         <Text style={styles.greetingText}>
           Halo {user?.nama || "Guest"}, Siap Untuk Bekerja?
         </Text>
