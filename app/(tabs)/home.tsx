@@ -1,10 +1,29 @@
 import styles from "@/assets/styles/homeStyle";
 import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 
 export default function Home() {
+  const [user, setUser] = useState<any>(null);
+
+  const getLoginData = async () => {
+    try {
+      const userData = await AsyncStorage.getItem("user");
+
+      if (userData) {
+        setUser(JSON.parse(userData));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getLoginData();
+  }, []);
+
   const [checkIn, setCheckin] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [total, setTotal] = useState("");
@@ -87,7 +106,9 @@ export default function Home() {
       {/* Top Header Container */}
       <View style={styles.topHeaderContainer}>
         <View style={{ width: 50, height: 50 }}></View>
-        <Text style={styles.greetingText}>Halo User, Siap Untuk Bekerja?</Text>
+        <Text style={styles.greetingText}>
+          Halo {user?.nama || "Guest"}, Siap Untuk Bekerja?
+        </Text>
         <Image
           source={{
             uri: "https://i.pinimg.com/1200x/e3/a1/44/e3a1446e603d77a85b6c14d479fe5243.jpg",

@@ -1,6 +1,9 @@
 import styles from "@/assets/styles/authStyle";
+
+import { loginUser } from "@/src/services/auth.services";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Checkbox from "expo-checkbox";
-import { Stack } from "expo-router";
+import { router, Stack } from "expo-router";
 import React, { useState } from "react";
 import {
   Alert,
@@ -18,12 +21,39 @@ export default function LoginScreen() {
   const [password, setPassword] = useState("");
   const [checked, setChecked] = useState(false);
 
-  const handleLogin = () => {
-    if (!password || !email) return;
-    Alert.alert("data login", `email: ${email}\npassword: ${password}`);
-    alert(`email: ${email}\npassword: ${password}`);
-  };
+  const handleLogin = async () => {
+    try {
+      if (!email || !password) {
+        Alert.alert("Error", "Email dan password wajib diisi");
+        return;
+      }
 
+      const response = await loginUser(email, password);
+
+      const data = response.data;
+      // simpan token
+      await AsyncStorage.setItem("accessToken", data.accessToken);
+
+      await AsyncStorage.setItem("refreshToken", data.refreshToken);
+
+      await AsyncStorage.setItem("user", JSON.stringify(data.user));
+
+      Alert.alert("Berhasil", "Login sukses");
+
+      router.replace("/home");
+    } catch (error: any) {
+      console.log(error);
+
+      Alert.alert(
+        "Login Error",
+        JSON.stringify(
+          error?.response?.data || error?.message || error,
+          null,
+          2,
+        ),
+      );
+    }
+  };
   return (
     <ScrollView style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
