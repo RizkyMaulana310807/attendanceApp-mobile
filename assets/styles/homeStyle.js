@@ -23,6 +23,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#F7FFF7",
     justifyContent: "space-around",
   },
+  containerIcon: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   dummyProfile: {
     width: scale(50),
     height: scale(50),

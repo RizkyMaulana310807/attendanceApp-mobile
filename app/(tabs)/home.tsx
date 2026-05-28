@@ -166,7 +166,7 @@ export default function Home() {
       {/* footer info  */}
       <View style={styles.footerHistoryInfoContainer}>
         {/* Time checked-in */}
-        <View>
+        <View style={styles.containerIcon}>
           <Ionicons name="time-outline" size={60} color="#0F172A" />
           {checkIn ? (
             <Text style={styles.footerTimeInfoText}>{checkIn} AM</Text>
@@ -176,13 +176,13 @@ export default function Home() {
           <Text style={styles.footerInfoText}>checked-in</Text>
         </View>
         {/* Time checked-out */}
-        <View>
+        <View style={styles.containerIcon}>
           <Ionicons name="stopwatch-outline" size={60} color="#0F172A" />
           <Text style={styles.footerTimeInfoText}>--:--</Text>
           <Text style={styles.footerInfoText}>checked-out</Text>
         </View>
         {/* Total hours */}
-        <View>
+        <View style={styles.containerIcon}>
           <Ionicons name="hourglass-outline" size={60} color="#0F172A" />
           <Text style={styles.footerTimeInfoText}>--:--</Text>
           <Text style={styles.footerInfoText}>total-hour</Text>
