@@ -38,8 +38,6 @@ export default function LoginScreen() {
 
       await AsyncStorage.setItem("user", JSON.stringify(data.user));
 
-      Alert.alert("Berhasil", "Login sukses");
-
       router.replace("/home");
     } catch (error: any) {
       console.log(error);

@@ -1,7 +1,7 @@
 const prisma = require("../config/prisma");
 
 const getAllAttendance = async () => {
-  return await prisma.attendance.findMany({
+  const attendances = await prisma.attendance.findMany({
     select: {
       id: true,
       userId: true,
@@ -14,8 +14,45 @@ const getAllAttendance = async () => {
       updatedAt: true,
     },
   });
-};
 
+  return attendances.map((attendance) => ({
+    ...attendance,
+
+    tanggal: attendance.tanggal
+      ? attendance.tanggal.toLocaleDateString("id-ID", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        })
+      : null,
+
+    checkIn: attendance.checkIn
+      ? attendance.checkIn.toLocaleString("id-ID", {
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : null,
+
+    checkOut: attendance.checkOut
+      ? attendance.checkOut.toLocaleString("id-ID", {
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : null,
+
+    updatedAt: attendance.updatedAt
+      ? attendance.updatedAt.toLocaleString("id-ID", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : null,
+  }));
+};
 const attendanceAction = async (userId) => {
   const now = new Date();
 

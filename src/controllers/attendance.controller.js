@@ -19,6 +19,8 @@ const getAttendance = async (req, res) => {
 
 const attendance = async (req, res) => {
   try {
+    console.log("USER:", req.user);
+
     const userId = req.user.id;
 
     const result = await attendanceService.attendanceAction(userId);
@@ -28,13 +30,15 @@ const attendance = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    return res.status(400).json({
+    console.error("ATTENDANCE ERROR:", error);
+
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
-
 module.exports = {
   getAttendance,
+  attendance,
 };

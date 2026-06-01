@@ -1,17 +1,18 @@
 import styles from "@/assets/styles/homeStyle";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
-import { Image, Pressable, Text, View } from "react-native";
+import { Alert, Image, Pressable, Text, View } from "react-native";
 
 export default function Home() {
   const [user, setUser] = useState<any>(null);
-
+  const [isCheckIn, setIsCheckIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const getLoginData = async () => {
     try {
       const userData = await AsyncStorage.getItem("user");
-
       if (userData) {
         const parsedUser = JSON.parse(userData);
 
@@ -83,6 +84,48 @@ export default function Home() {
     return `${dayName}, ${day} ${month}`;
   };
 
+  const checkAttendanceStatus = async () => {
+    try {
+      const savedTime = await AsyncStorage.getItem("attendance_lock_time");
+
+      if (!savedTime) return;
+
+      const lockTime = Number(savedTime);
+
+      const now = Date.now();
+
+      // cooldown 1 menit
+      const cooldown = 1 * 60 * 1000;
+
+      if (now - lockTime < cooldown) {
+        setIsCheckIn(true);
+
+        // tampilkan jam checkin
+        const formattedTime = new Date(lockTime)
+          .toLocaleTimeString("id-ID", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          })
+          .replaceAll(".", ":");
+
+        setCheckin(formattedTime);
+
+        const remainingTime = cooldown - (now - lockTime);
+
+        // auto unlock
+        setTimeout(async () => {
+          setIsCheckIn(false);
+
+          await AsyncStorage.removeItem("attendance_lock_time");
+        }, remainingTime);
+      } else {
+        await AsyncStorage.removeItem("attendance_lock_time");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const formattedTime = time
     .toLocaleTimeString("id-ID", {
       hour: "2-digit",
@@ -91,15 +134,60 @@ export default function Home() {
     })
     .replaceAll(".", ":");
 
-  const absentClick = () => {
-    const formattedTime = now
-      .toLocaleTimeString("id-ID", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      })
-      .replaceAll(".", ":");
-    setCheckin(formattedTime);
+  const absentClick = async () => {
+    const bearerToken = await AsyncStorage.getItem("accessToken");
+    console.log("TOKEN:", bearerToken);
+
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        "http://10.249.221.72:3000/api/attendances/action",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+          },
+        },
+      );
+      if (response.data.success) {
+        setIsCheckIn(true);
+
+        const now = new Date();
+
+        const formattedTime = now
+          .toLocaleTimeString("id-ID", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          })
+          .replaceAll(".", ":");
+
+        setCheckin(formattedTime);
+
+        await AsyncStorage.setItem(
+          "attendance_lock_time",
+          Date.now().toString(),
+        );
+
+        Alert.alert("Berhasil", "Attendance berhasil");
+
+        setTimeout(async () => {
+          setIsCheckIn(false);
+
+          await AsyncStorage.removeItem("attendance_lock_time");
+        }, 60 * 1000);
+      }
+    } catch (error: any) {
+      console.log("FULL ERROR:", error?.response?.data);
+
+      Alert.alert(
+        "Error",
+        error?.response?.data?.message || error.message || "Gagal attendance",
+      );
+    } finally {
+      setIsLoading(false);
+    }
+    console.log("TOKEN:", bearerToken);
   };
 
   return (
@@ -139,7 +227,11 @@ export default function Home() {
             source={require("../../assets/images/OutlineWavy.png")}
           />
           <LinearGradient
-            colors={["#c2ff67", "#84CC16"]}
+            colors={
+              isCheckIn
+                ? ["#A1A1AA", "#52525B"] // abu abu setelah klik
+                : ["#c2ff67", "#84CC16"] // hijau default
+            }
             start={{ x: 1, y: 0 }} // kanan atas
             end={{ x: 0, y: 1 }} // kiri bawah
             style={{

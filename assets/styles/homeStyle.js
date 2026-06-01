@@ -80,8 +80,9 @@ const styles = StyleSheet.create({
   },
   shiftText: {
     fontFamily: "Quicksand",
+    fontWeight: "bold",
     color: "#0F172A",
-    fontSize: moderateScale(15),
+    fontSize: moderateScale(12),
     marginTop: 8,
   },
   locationInfoText: {
