@@ -7,14 +7,15 @@ import React, { useEffect, useState } from "react";
 import { Alert, Image, Pressable, Text, View } from "react-native";
 
 export default function Home() {
-  useEffect(() => {
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-    console.log("Timezone:", timezone);
-  }, []);
   const [user, setUser] = useState<any>(null);
-  const [isCheckIn, setIsCheckIn] = useState(false);
+  const [isButtonAvaliable, setIsButtonAvaliable] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [checkIn, setCheckin] = useState("-- : --");
+  const [checkOut, setCheckout] = useState("-- : --");
+  const [totalHours, setTotalHours] = useState("-- H");
+  const now = new Date();
+  const [time, setTime] = useState(new Date());
+
   const getLoginData = async () => {
     try {
       const userData = await AsyncStorage.getItem("user");
@@ -35,13 +36,6 @@ export default function Home() {
   useEffect(() => {
     getLoginData();
   }, []);
-
-  const [checkIn, setCheckin] = useState("");
-  const [checkOut, setCheckOut] = useState("");
-  const [total, setTotal] = useState("");
-  const now = new Date();
-
-  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
     let timeout: number;
@@ -89,48 +83,6 @@ export default function Home() {
     return `${dayName}, ${day} ${month}`;
   };
 
-  const checkAttendanceStatus = async () => {
-    try {
-      const savedTime = await AsyncStorage.getItem("attendance_lock_time");
-
-      if (!savedTime) return;
-
-      const lockTime = Number(savedTime);
-
-      const now = Date.now();
-
-      // cooldown 1 menit
-      const cooldown = 1 * 60 * 1000;
-
-      if (now - lockTime < cooldown) {
-        setIsCheckIn(true);
-
-        // tampilkan jam checkin
-        const formattedTime = new Date(lockTime)
-          .toLocaleTimeString("id-ID", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false,
-          })
-          .replaceAll(".", ":");
-
-        setCheckin(formattedTime);
-
-        const remainingTime = cooldown - (now - lockTime);
-
-        // auto unlock
-        setTimeout(async () => {
-          setIsCheckIn(false);
-
-          await AsyncStorage.removeItem("attendance_lock_time");
-        }, remainingTime);
-      } else {
-        await AsyncStorage.removeItem("attendance_lock_time");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
   const formattedTime = time
     .toLocaleTimeString("id-ID", {
       hour: "2-digit",
@@ -140,11 +92,20 @@ export default function Home() {
     .replaceAll(".", ":");
 
   const absentClick = async () => {
+    // ======================
+    // CEK COOLDOWN SEBELUM APAPUN
+    // ======================
+    const lockTime = await AsyncStorage.getItem("attendance_lock_time");
+    if (lockTime) {
+      Alert.alert("Warning", "Anda Belum bisa Absen pulang sekarang");
+      return; // Stop di sini, API tidak terkirim sama sekali
+    }
+
     const bearerToken = await AsyncStorage.getItem("accessToken");
-    console.log("TOKEN:", bearerToken);
 
     try {
       setIsLoading(true);
+
       const response = await axios.post(
         "http://10.249.221.72:3000/api/attendances/action",
         {},
@@ -154,37 +115,56 @@ export default function Home() {
           },
         },
       );
-      if (response.data.success) {
-        setIsCheckIn(true);
 
-        const now = new Date();
+      const attendance = response.data.data;
 
-        const formattedTime = now
+      const formatTime = (date: string) => {
+        return new Date(date)
           .toLocaleTimeString("id-ID", {
             hour: "2-digit",
             minute: "2-digit",
             hour12: false,
           })
           .replaceAll(".", ":");
+      };
 
-        setCheckin(formattedTime);
+      // ======================
+      // CHECK-IN
+      // ======================
+      if (attendance.checkIn && !attendance.checkOut) {
+        setIsButtonAvaliable(true);
+
+        setCheckin(formatTime(attendance.checkIn));
 
         await AsyncStorage.setItem(
           "attendance_lock_time",
           Date.now().toString(),
         );
 
-        Alert.alert("Berhasil", "Attendance berhasil");
+        Alert.alert("Berhasil", "Check-in berhasil");
 
         setTimeout(async () => {
-          setIsCheckIn(false);
-
+          setIsButtonAvaliable(false);
           await AsyncStorage.removeItem("attendance_lock_time");
         }, 60 * 1000);
       }
-    } catch (error: any) {
-      console.log("FULL ERROR:", error?.response?.data);
 
+      // ======================
+      // CHECK-OUT
+      // ======================
+      if (attendance.checkOut) {
+        setCheckout(formatTime(attendance.checkOut));
+
+        const totalMinutes = attendance.totalMinutes || 0;
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+
+        setTotalHours(`${hours}j ${minutes}m`);
+        setIsButtonAvaliable(true);
+
+        Alert.alert("Berhasil", "Check-out berhasil");
+      }
+    } catch (error: any) {
       Alert.alert(
         "Error",
         error?.response?.data?.message || error.message || "Gagal attendance",
@@ -192,9 +172,7 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-    console.log("TOKEN:", bearerToken);
   };
-
   return (
     <View style={styles.container}>
       <Image
@@ -233,7 +211,7 @@ export default function Home() {
           />
           <LinearGradient
             colors={
-              isCheckIn
+              isButtonAvaliable
                 ? ["#A1A1AA", "#52525B"] // abu abu setelah klik
                 : ["#c2ff67", "#84CC16"] // hijau default
             }
@@ -265,23 +243,19 @@ export default function Home() {
         {/* Time checked-in */}
         <View style={styles.containerIcon}>
           <Ionicons name="time-outline" size={60} color="#0F172A" />
-          {checkIn ? (
-            <Text style={styles.footerTimeInfoText}>{checkIn} AM</Text>
-          ) : (
-            <Text style={styles.footerTimeInfoText}>-- : -- AM</Text>
-          )}
+          <Text style={styles.footerTimeInfoText}>{checkIn}</Text>
           <Text style={styles.footerInfoText}>checked-in</Text>
         </View>
         {/* Time checked-out */}
         <View style={styles.containerIcon}>
           <Ionicons name="stopwatch-outline" size={60} color="#0F172A" />
-          <Text style={styles.footerTimeInfoText}>-- : -- AM</Text>
+          <Text style={styles.footerTimeInfoText}>{checkOut}</Text>
           <Text style={styles.footerInfoText}>checked-out</Text>
         </View>
         {/* Total hours */}
         <View style={styles.containerIcon}>
           <Ionicons name="hourglass-outline" size={60} color="#0F172A" />
-          <Text style={styles.footerTimeInfoText}>-- H</Text>
+          <Text style={styles.footerTimeInfoText}>{totalHours}</Text>
           <Text style={styles.footerInfoText}>total-hour</Text>
         </View>
       </View>
