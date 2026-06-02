@@ -270,13 +270,13 @@ export default function Home() {
         {/* Time checked-out */}
         <View style={styles.containerIcon}>
           <Ionicons name="stopwatch-outline" size={60} color="#0F172A" />
-          <Text style={styles.footerTimeInfoText}>--:--</Text>
+          <Text style={styles.footerTimeInfoText}>-- : -- AM</Text>
           <Text style={styles.footerInfoText}>checked-out</Text>
         </View>
         {/* Total hours */}
         <View style={styles.containerIcon}>
           <Ionicons name="hourglass-outline" size={60} color="#0F172A" />
-          <Text style={styles.footerTimeInfoText}>--:--</Text>
+          <Text style={styles.footerTimeInfoText}>-- H</Text>
           <Text style={styles.footerInfoText}>total-hour</Text>
         </View>
       </View>

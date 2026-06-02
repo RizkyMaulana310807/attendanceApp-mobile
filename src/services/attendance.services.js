@@ -53,6 +53,7 @@ const getAllAttendance = async () => {
       : null,
   }));
 };
+
 const attendanceAction = async (userId) => {
   const now = new Date();
 
