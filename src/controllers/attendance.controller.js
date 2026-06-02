@@ -38,7 +38,27 @@ const attendance = async (req, res) => {
     });
   }
 };
+
+const getTodayAttendance = async (req, res) => {
+  try {
+    console.log("User:", req.user);
+    const userId = req.user.id;
+    const result = await attendanceService.getTodayAttendance(userId);
+    return res.status(200).json({
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    console.error("GAGAL MENGAMBIL DATA HARI INI", error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   getAttendance,
   attendance,
+  getTodayAttendance,
 };

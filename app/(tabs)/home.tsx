@@ -8,11 +8,18 @@ import { Alert, Image, Pressable, Text, View } from "react-native";
 
 export default function Home() {
   const [user, setUser] = useState<any>(null);
-  const [isButtonAvaliable, setIsButtonAvaliable] = useState(false);
+  const [isButtonAvaliable, setIsButtonAvaliable] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [checkIn, setCheckin] = useState("-- : --");
   const [checkOut, setCheckout] = useState("-- : --");
   const [totalHours, setTotalHours] = useState("-- H");
+  interface TodayAttendance {
+    checkIn: string;
+    checkOut: string;
+    totalHours: string;
+  }
+  const [todayAttendance, setTodayAttendance] =
+    useState<TodayAttendance | null>(null);
   const now = new Date();
   const [time, setTime] = useState(new Date());
 
@@ -33,8 +40,32 @@ export default function Home() {
       console.log(error);
     }
   };
+
+  const getTodayAttendance = async () => {
+    try {
+      const bearerToken = await AsyncStorage.getItem("accessToken");
+
+      const response = await axios.get(
+        "http://10.249.221.72:3000/api/attendances/today",
+        {
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+          },
+        },
+      );
+      const attendance = response.data.data;
+
+      console.log(attendance);
+      setTodayAttendance(attendance);
+      setIsButtonAvaliable(!attendance);
+    } catch (error: any) {
+      console.error("ERROR : " + error);
+    }
+  };
+
   useEffect(() => {
     getLoginData();
+    getTodayAttendance();
   }, []);
 
   useEffect(() => {
@@ -132,7 +163,7 @@ export default function Home() {
       // CHECK-IN
       // ======================
       if (attendance.checkIn && !attendance.checkOut) {
-        setIsButtonAvaliable(true);
+        setIsButtonAvaliable(false);
 
         setCheckin(formatTime(attendance.checkIn));
 
@@ -144,7 +175,7 @@ export default function Home() {
         Alert.alert("Berhasil", "Check-in berhasil");
 
         setTimeout(async () => {
-          setIsButtonAvaliable(false);
+          setIsButtonAvaliable(true);
           await AsyncStorage.removeItem("attendance_lock_time");
         }, 60 * 1000);
       }
@@ -160,7 +191,7 @@ export default function Home() {
         const minutes = totalMinutes % 60;
 
         setTotalHours(`${hours}j ${minutes}m`);
-        setIsButtonAvaliable(true);
+        setIsButtonAvaliable(false);
 
         Alert.alert("Berhasil", "Check-out berhasil");
       }
@@ -212,8 +243,8 @@ export default function Home() {
           <LinearGradient
             colors={
               isButtonAvaliable
-                ? ["#A1A1AA", "#52525B"] // abu abu setelah klik
-                : ["#c2ff67", "#84CC16"] // hijau default
+                ? ["#c2ff67", "#84CC16"] // Ketika button aktif hijau
+                : ["#A1A1AA", "#52525B"] // Ketika button nonaktif abu abu
             }
             start={{ x: 1, y: 0 }} // kanan atas
             end={{ x: 0, y: 1 }} // kiri bawah
@@ -243,19 +274,25 @@ export default function Home() {
         {/* Time checked-in */}
         <View style={styles.containerIcon}>
           <Ionicons name="time-outline" size={60} color="#0F172A" />
-          <Text style={styles.footerTimeInfoText}>{checkIn}</Text>
+          <Text style={styles.footerTimeInfoText}>
+            {todayAttendance ? todayAttendance.checkIn : checkIn}
+          </Text>
           <Text style={styles.footerInfoText}>checked-in</Text>
         </View>
         {/* Time checked-out */}
         <View style={styles.containerIcon}>
           <Ionicons name="stopwatch-outline" size={60} color="#0F172A" />
-          <Text style={styles.footerTimeInfoText}>{checkOut}</Text>
+          <Text style={styles.footerTimeInfoText}>
+            {todayAttendance ? todayAttendance.checkOut : checkOut}
+          </Text>
           <Text style={styles.footerInfoText}>checked-out</Text>
         </View>
         {/* Total hours */}
         <View style={styles.containerIcon}>
           <Ionicons name="hourglass-outline" size={60} color="#0F172A" />
-          <Text style={styles.footerTimeInfoText}>{totalHours}</Text>
+          <Text style={styles.footerTimeInfoText}>
+            {todayAttendance ? todayAttendance.totalHours : totalHours}
+          </Text>
           <Text style={styles.footerInfoText}>total-hour</Text>
         </View>
       </View>

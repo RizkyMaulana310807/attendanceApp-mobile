@@ -55,6 +55,52 @@ const getAllAttendance = async () => {
   }));
 };
 
+const getTodayAttendance = async (userId) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const attendance = await prisma.attendance.findUnique({
+    where: {
+      userId_tanggal: {
+        userId,
+        tanggal: today,
+      },
+    },
+    select: {
+      checkIn: true,
+      checkOut: true,
+      totalMinutes: true,
+    },
+  });
+
+  if (!attendance) {
+    return null;
+  }
+
+  const formatTime = (date) => {
+    if (!date) return "--:--";
+
+    return new Intl.DateTimeFormat("id-ID", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+      timeZone: "Asia/Jakarta",
+    }).format(date);
+  };
+
+  const totalMinutes = attendance.totalMinutes;
+
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  const totalHours = `${hours}.${minutes.toString().padStart(2, "0")}`;
+
+  return {
+    checkIn: formatTime(attendance.checkIn),
+    checkOut: formatTime(attendance.checkOut),
+    totalHours,
+  };
+};
 const attendanceAction = async (userId) => {
   const timeZone = "Asia/Jakarta";
 
@@ -121,4 +167,5 @@ const attendanceAction = async (userId) => {
 module.exports = {
   attendanceAction,
   getAllAttendance,
+  getTodayAttendance,
 };
