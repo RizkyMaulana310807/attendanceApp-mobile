@@ -1,4 +1,4 @@
-import CardCalendar from "@/app/partials/history/cardCalendar";
+import CardCalendar from "@/app/component/history/cardCalendar";
 import React from "react";
 import { Image, ScrollView, View } from "react-native";
 

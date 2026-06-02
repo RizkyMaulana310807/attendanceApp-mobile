@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -8,9 +8,9 @@ import { Ionicons } from "@expo/vector-icons";
 import styles from "@/assets/styles/profileStyle";
 
 // COMPONENT
-import { ProfileCard } from "@/app/partials/profile/cardProfile";
-import { StreakCard } from "@/app/partials/profile/cardWeekStreak";
-import CircleProgress from "@/app/partials/profile/progressCard";
+import { ProfileCard } from "@/app/component/profile/cardProfile";
+import { StreakCard } from "@/app/component/profile/cardWeekStreak";
+import CircleProgress from "@/app/component/profile/progressCard";
 import { router } from "expo-router";
 
 export default function ProfileScreen() {
@@ -115,7 +115,6 @@ export default function ProfileScreen() {
               user_role={user?.role}
               onLogout={async () => {
                 await AsyncStorage.clear();
-
                 router.replace("/login");
               }}
             />
