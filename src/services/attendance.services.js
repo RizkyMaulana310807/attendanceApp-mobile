@@ -1,4 +1,5 @@
 const prisma = require("../config/prisma");
+const { toZonedTime, fromZonedTime } = require("date-fns-tz");
 
 const getAllAttendance = async () => {
   const attendances = await prisma.attendance.findMany({
@@ -55,13 +56,17 @@ const getAllAttendance = async () => {
 };
 
 const attendanceAction = async (userId) => {
-  const now = new Date();
+  const timeZone = "Asia/Jakarta";
 
-  // Buat tanggal tanpa jam (YYYY-MM-DD)
-  const startOfDay = new Date(now);
+  // Waktu sekarang dalam timezone WIB
+  const now = new Date();
+  const zonedNow = toZonedTime(now, timeZone);
+
+  // Ambil awal & akhir hari berdasarkan WIB
+  const startOfDay = new Date(zonedNow);
   startOfDay.setHours(0, 0, 0, 0);
 
-  const endOfDay = new Date(now);
+  const endOfDay = new Date(zonedNow);
   endOfDay.setHours(23, 59, 59, 999);
 
   // Cari attendance hari ini

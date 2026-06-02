@@ -7,6 +7,11 @@ import React, { useEffect, useState } from "react";
 import { Alert, Image, Pressable, Text, View } from "react-native";
 
 export default function Home() {
+  useEffect(() => {
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    console.log("Timezone:", timezone);
+  }, []);
   const [user, setUser] = useState<any>(null);
   const [isCheckIn, setIsCheckIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
