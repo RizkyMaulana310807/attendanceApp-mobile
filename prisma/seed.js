@@ -150,25 +150,39 @@ async function main() {
   for (let i = 1; i < users.length; i++) {
     const user = users[i];
 
-    for (let day = 1; day <= 5; day++) {
-      const checkIn = new Date(`2026-05-0${day}T08:00:00`);
+    // 14 hari ke belakang sampai hari ini
+    for (let dayOffset = 14; dayOffset >= 0; dayOffset--) {
+      const currentDate = new Date();
 
-      const checkOut = new Date(`2026-05-0${day}T16:00:00`);
+      // mundur X hari
+      currentDate.setDate(currentDate.getDate() - dayOffset);
+
+      // clone date agar tidak bentrok reference
+      const attendanceDate = new Date(currentDate);
+
+      // jam masuk 08:00
+      const checkIn = new Date(currentDate);
+      checkIn.setHours(8, 0, 0, 0);
+
+      // jam pulang 16:00
+      const checkOut = new Date(currentDate);
+      checkOut.setHours(16, 0, 0, 0);
 
       await prisma.attendance.create({
         data: {
           userId: user.id,
-          tanggal: new Date(`2026-05-0${day}`),
+          tanggal: attendanceDate,
           checkIn,
           checkOut,
           totalMinutes: 480,
           status: "PRESENT",
-          workMode: day === 3 ? "WFH" : "ONSITE",
+
+          // contoh: setiap hari ke-3 WFH
+          workMode: dayOffset % 3 === 0 ? "WFH" : "ONSITE",
         },
       });
     }
   }
-
   // ======================
   // WORK PERMISSION
   // ======================

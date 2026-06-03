@@ -1,3 +1,4 @@
+const { JSDocParsingMode } = require("typescript");
 const prisma = require("../config/prisma");
 const { toZonedTime, fromZonedTime } = require("date-fns-tz");
 
@@ -164,8 +165,52 @@ const attendanceAction = async (userId) => {
   throw new Error("Anda sudah melakukan check-out hari ini");
 };
 
+const getTotalAttendance = async (userId) => {
+  const attendance = await prisma.attendance.count({
+    where: {
+      userId: userId,
+    },
+  });
+  return attendance;
+};
+
+const getUserAttendance = async (userId, date = new Date()) => {
+  const selectedDate = new Date(date);
+
+  // awal bulan dari tanggal yang dipilih
+  const startOfMonth = new Date(
+    selectedDate.getFullYear(),
+    selectedDate.getMonth(),
+    1,
+  );
+
+  // awal bulan berikutnya
+  const startOfNextMonth = new Date(
+    selectedDate.getFullYear(),
+    selectedDate.getMonth() + 1,
+    1,
+  );
+
+  const attendance = await prisma.attendance.findMany({
+    where: {
+      userId,
+      tanggal: {
+        gte: startOfMonth,
+        lt: startOfNextMonth,
+      },
+    },
+    orderBy: {
+      tanggal: "asc",
+    },
+  });
+
+  return attendance;
+};
+
 module.exports = {
   attendanceAction,
   getAllAttendance,
   getTodayAttendance,
+  getTotalAttendance,
+  getUserAttendance,
 };

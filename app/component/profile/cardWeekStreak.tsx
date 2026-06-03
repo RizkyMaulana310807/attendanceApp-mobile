@@ -6,9 +6,35 @@ import styles from "@/assets/styles/profileStyle";
 
 interface StreakCardProps {
   streak_total: number;
+  date: number;
+  month_name: string;
+  day_name: string;
+  year: number;
 }
 
-export const StreakCard: React.FC<StreakCardProps> = ({ streak_total }) => {
+export const StreakCard: React.FC<StreakCardProps> = ({
+  streak_total,
+  date,
+  month_name,
+  day_name,
+  year,
+}) => {
+  const getOrdinalSuffix = (day: number) => {
+    if (day >= 11 && day <= 13) {
+      return "Th.";
+    }
+
+    switch (day % 10) {
+      case 1:
+        return "St.";
+      case 2:
+        return "Nd.";
+      case 3:
+        return "Rd.";
+      default:
+        return "Th.";
+    }
+  };
   return (
     <View style={styles.cardStreakContainer}>
       {/* Streak Data Info */}
@@ -18,17 +44,21 @@ export const StreakCard: React.FC<StreakCardProps> = ({ streak_total }) => {
           {/* Number Of Week */}
           <View style={styles.numberOfWeekContainer}>
             <View>
-              <Text style={styles.numberOfWeekText}>1</Text>
+              <Text style={styles.numberOfWeekText}>{date}</Text>
             </View>
             <View>
-              <Text style={styles.ordinalIndicatorText}>St.</Text>
+              <Text style={styles.ordinalIndicatorText}>
+                {getOrdinalSuffix(date)}
+              </Text>
             </View>
           </View>
 
           {/* Date Display */}
           <View style={styles.dateDisplayContainer}>
-            <Text style={styles.weekNameText}>Wednesday</Text>
-            <Text style={styles.dateInfoText}>December, 2026</Text>
+            <Text style={styles.weekNameText}>{day_name}</Text>
+            <Text style={styles.dateInfoText}>
+              {month_name}, {year}
+            </Text>
           </View>
         </View>
 

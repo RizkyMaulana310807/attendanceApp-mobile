@@ -57,8 +57,48 @@ const getTodayAttendance = async (req, res) => {
   }
 };
 
+const getTotalAttendance = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const result = await attendanceService.getTotalAttendance(userId);
+    return res.status(200).json({
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    console.error("GAGAL MENGAMBIL TOTAL DATA", error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const getUserAttendance = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const date = req.query.date;
+
+    const result = await attendanceService.getUserAttendance(userId, date);
+
+    return res.status(200).json({
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    console.error("GAGAL MENGAMBIL DATA ATTENDANCE", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   getAttendance,
   attendance,
   getTodayAttendance,
+  getTotalAttendance,
+  getUserAttendance,
 };

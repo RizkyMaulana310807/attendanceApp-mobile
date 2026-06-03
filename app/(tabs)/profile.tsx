@@ -1,11 +1,16 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import { useEffect, useState } from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
-
-import { Ionicons } from "@expo/vector-icons";
-
 import styles from "@/assets/styles/profileStyle";
+import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import {
+  Alert,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 // COMPONENT
 import { ProfileCard } from "@/app/component/profile/cardProfile";
@@ -16,6 +21,28 @@ import { router } from "expo-router";
 export default function ProfileScreen() {
   // Dummy Data
   const [user, setUser] = useState<any>(null);
+  const [streakTotal, setStreakTotal] = useState<number>(0);
+  const getStreak = async () => {
+    const bearerToken = await AsyncStorage.getItem("accessToken");
+
+    try {
+      const response = await axios.get(
+        "http://10.249.221.72:3000/api/attendances/total",
+        {
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+          },
+        },
+      );
+      const streak = response.data.data;
+      setStreakTotal(streak);
+    } catch (error: any) {
+      Alert.alert(
+        "Error",
+        error?.response?.data?.message || error.message || "Gagal attendance",
+      );
+    }
+  };
 
   const getLoginData = async () => {
     try {
@@ -36,6 +63,7 @@ export default function ProfileScreen() {
     }
   };
   useEffect(() => {
+    getStreak();
     getLoginData();
   }, []);
 
@@ -44,6 +72,44 @@ export default function ProfileScreen() {
     progress: 90,
     taskCompleted: 60,
   };
+
+  const getCurrentDate = () => {
+    const now = new Date();
+
+    const days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    return {
+      dayName: days[now.getDay()],
+      date: now.getDate(),
+      monthName: months[now.getMonth()],
+      year: now.getFullYear(),
+    };
+  };
+
+  const currentDate = getCurrentDate();
 
   return (
     <View
@@ -122,7 +188,13 @@ export default function ProfileScreen() {
             {/* STREAK */}
             <Text style={styles.cardHeader}>Streak Progress</Text>
 
-            <StreakCard streak_total={20} />
+            <StreakCard
+              streak_total={streakTotal}
+              date={currentDate.date}
+              day_name={currentDate.dayName}
+              month_name={currentDate.monthName}
+              year={currentDate.year}
+            />
 
             {/* MISSION */}
             <Text style={styles.cardHeader}>Mission</Text>
