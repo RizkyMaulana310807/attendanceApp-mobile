@@ -77,9 +77,14 @@ const getTotalAttendance = async (req, res) => {
 const getUserAttendance = async (req, res) => {
   try {
     const userId = req.user.id;
-    const date = req.query.date;
+    const month = req.query.month;
+    const year = req.query.year;
 
-    const result = await attendanceService.getUserAttendance(userId, date);
+    const result = await attendanceService.getUserAttendance(
+      userId,
+      month,
+      year,
+    );
 
     return res.status(200).json({
       success: true,

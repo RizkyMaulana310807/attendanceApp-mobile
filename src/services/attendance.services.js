@@ -174,22 +174,16 @@ const getTotalAttendance = async (userId) => {
   return attendance;
 };
 
-const getUserAttendance = async (userId, date = new Date()) => {
-  const selectedDate = new Date(date);
+const getUserAttendance = async (userId, month, year) => {
+  const currentDate = new Date();
 
-  // awal bulan dari tanggal yang dipilih
-  const startOfMonth = new Date(
-    selectedDate.getFullYear(),
-    selectedDate.getMonth(),
-    1,
-  );
+  // default ke bulan sekarang jika tidak diisi
+  const selectedMonth = month ?? currentDate.getMonth() + 1;
+  const selectedYear = year ?? currentDate.getFullYear();
 
-  // awal bulan berikutnya
-  const startOfNextMonth = new Date(
-    selectedDate.getFullYear(),
-    selectedDate.getMonth() + 1,
-    1,
-  );
+  const startOfMonth = new Date(selectedYear, selectedMonth - 1, 1);
+
+  const startOfNextMonth = new Date(selectedYear, selectedMonth, 1);
 
   const attendance = await prisma.attendance.findMany({
     where: {

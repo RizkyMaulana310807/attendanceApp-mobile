@@ -16,4 +16,5 @@ router.get(
   authMiddleware,
   attendanceController.getUserAttendance,
 );
+
 module.exports = router;
