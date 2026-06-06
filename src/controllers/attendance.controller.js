@@ -19,8 +19,6 @@ const getAttendance = async (req, res) => {
 
 const attendance = async (req, res) => {
   try {
-    console.log("USER:", req.user);
-
     const userId = req.user.id;
 
     const result = await attendanceService.attendanceAction(userId);
@@ -41,7 +39,6 @@ const attendance = async (req, res) => {
 
 const getTodayAttendance = async (req, res) => {
   try {
-    console.log("User:", req.user);
     const userId = req.user.id;
     const result = await attendanceService.getTodayAttendance(userId);
     return res.status(200).json({
@@ -77,18 +74,23 @@ const getTotalAttendance = async (req, res) => {
 const getUserAttendance = async (req, res) => {
   try {
     const userId = req.user.id;
-    const month = req.query.month;
-    const year = req.query.year;
 
+    // Ambil page dan limit dari query string, berikan nilai default jika tidak diisi
+    // req.query mengembalikan string, jadi kita parsing ke Integer
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+
+    // Panggil service dengan parameter pagination baru
     const result = await attendanceService.getUserAttendance(
       userId,
-      month,
-      year,
+      page,
+      limit,
     );
 
     return res.status(200).json({
       success: true,
-      data: result,
+      message: "Berhasil mengambil data absensi",
+      ...result, // Ini akan otomatis mengekstrak { metadata, data } dari service sebelumnya
     });
   } catch (error) {
     console.error("GAGAL MENGAMBIL DATA ATTENDANCE", error);
@@ -99,7 +101,6 @@ const getUserAttendance = async (req, res) => {
     });
   }
 };
-
 module.exports = {
   getAttendance,
   attendance,
