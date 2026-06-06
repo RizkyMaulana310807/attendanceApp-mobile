@@ -202,8 +202,8 @@ const styles = StyleSheet.create({
   },
 
   streakAbsent: {
-    width: scale(40),
-    height: scale(40),
+    width: scale(30),
+    height: scale(30),
     borderRadius: scale(100),
     borderWidth: scale(4),
     borderColor: "#ff353c80",
@@ -213,8 +213,8 @@ const styles = StyleSheet.create({
   },
 
   streakPresent: {
-    width: scale(40),
-    height: scale(40),
+    width: scale(30),
+    height: scale(30),
     borderRadius: scale(100),
     borderWidth: scale(4),
     borderColor: "#84CC1680",
@@ -223,9 +223,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  streakSick: {
-    width: scale(40),
-    height: scale(40),
+  streakPermission: {
+    width: scale(30),
+    height: scale(30),
+    borderRadius: scale(100),
+    borderWidth: scale(4),
+    borderColor: "#FFE66D",
+    backgroundColor: "#FFE66D",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  streakLate: {
+    width: scale(30),
+    height: scale(30),
     borderRadius: scale(100),
     borderWidth: scale(4),
     borderColor: "#627C8580",
@@ -233,13 +244,24 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-
+  streakEmpty: {
+    width: scale(30),
+    height: scale(30),
+    borderRadius: scale(100),
+    borderWidth: scale(4),
+    borderColor: "#444",
+    backgroundColor: "#666",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   alphabetStreakProgress: {
     fontFamily: "Quicksand",
-    fontSize: moderateScale(24),
+    fontSize: moderateScale(18),
     fontWeight: "bold",
     color: "#F7FFF7",
     textAlign: "center",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   cardProgressContainer: {

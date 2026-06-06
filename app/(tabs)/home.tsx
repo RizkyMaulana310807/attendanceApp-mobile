@@ -3,7 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Image, Pressable, Text, View } from "react-native";
 
 export default function Home() {
@@ -55,7 +55,6 @@ export default function Home() {
       );
       const attendance = response.data.data;
 
-      console.log(attendance);
       setTodayAttendance(attendance);
       setIsButtonAvaliable(!attendance);
     } catch (error: any) {

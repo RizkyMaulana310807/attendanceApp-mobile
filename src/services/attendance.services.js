@@ -174,39 +174,56 @@ const getTotalAttendance = async (userId) => {
   return attendance;
 };
 
-const getUserAttendance = async (userId, date = new Date()) => {
-  const selectedDate = new Date(date);
-
-  // awal bulan dari tanggal yang dipilih
-  const startOfMonth = new Date(
-    selectedDate.getFullYear(),
-    selectedDate.getMonth(),
-    1,
-  );
-
-  // awal bulan berikutnya
-  const startOfNextMonth = new Date(
-    selectedDate.getFullYear(),
-    selectedDate.getMonth() + 1,
-    1,
-  );
-
+const getUserAttendance = async (userId) => {
   const attendance = await prisma.attendance.findMany({
-    where: {
-      userId,
-      tanggal: {
-        gte: startOfMonth,
-        lt: startOfNextMonth,
-      },
-    },
+    where: { userId },
     orderBy: {
       tanggal: "asc",
     },
   });
 
-  return attendance;
-};
+  if (attendance.length === 0) {
+    return { totalWeeks: 0, weeks: {} };
+  }
 
+  const groupedWeeks = {};
+  let weekCounter = 1;
+
+  const firstAttendanceDate = new Date(attendance[0].tanggal);
+
+  const startOfFirstWeek = new Date(firstAttendanceDate);
+  const dayIndex = startOfFirstWeek.getDay(); // 0 = Minggu, 1 = Senin, dst.
+  const diffToMonday = dayIndex === 0 ? -6 : 1 - dayIndex;
+  startOfFirstWeek.setDate(startOfFirstWeek.getDate() + diffToMonday);
+  startOfFirstWeek.setHours(0, 0, 0, 0); // Reset jam ke 00:00
+
+  let currentWeekStart = new Date(startOfFirstWeek);
+  let currentWeekEnd = new Date(currentWeekStart);
+  currentWeekEnd.setDate(currentWeekStart.getDate() + 6);
+  currentWeekEnd.setHours(23, 59, 59, 999);
+
+  groupedWeeks[`Week ${weekCounter}`] = [];
+
+  attendance.forEach((record) => {
+    const recordDate = new Date(record.tanggal);
+
+    while (recordDate > currentWeekEnd) {
+      weekCounter++;
+
+      currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+      currentWeekEnd.setDate(currentWeekEnd.getDate() + 7);
+
+      groupedWeeks[`Week ${weekCounter}`] = [];
+    }
+
+    groupedWeeks[`Week ${weekCounter}`].push(record);
+  });
+
+  return {
+    totalWeeks: weekCounter,
+    weeks: groupedWeeks,
+  };
+};
 module.exports = {
   attendanceAction,
   getAllAttendance,
