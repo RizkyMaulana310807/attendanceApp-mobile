@@ -1,6 +1,6 @@
-import React, { useMemo, useRef, useState } from "react";
-
+import { useMemo, useRef, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import Animated, { FadeInDown, FadeOut } from "react-native-reanimated";
 
 import { Calendar } from "react-native-calendars";
 
@@ -194,68 +194,81 @@ export default function CardCalendar() {
           nestedScrollEnabled={true}
           style={styles.attendanceHistoryWrapper}
         >
-          {attendanceData.map((item) => {
+          {attendanceData.map((item, index) => {
             const isActive = selectedDate === item.date;
 
             return (
-              <View
+              <Animated.View
                 key={item.id}
+                entering={FadeInDown.springify()
+                  .damping(14)
+                  .stiffness(120)
+                  .delay(index * 45)}
+                exiting={FadeOut.duration(200)}
                 onLayout={(event) => {
                   itemPositions.current[item.date] = event.nativeEvent.layout.y;
                 }}
-                style={[
-                  styles.historyCard,
-
-                  isActive && styles.activeHistoryCard,
-                ]}
               >
-                {/* NUMBER */}
-                <View
+                <Animated.View
                   style={[
-                    styles.numberContainer,
-
-                    isActive && styles.activeNumberContainer,
+                    styles.historyCard,
+                    isActive && styles.activeHistoryCard,
+                    {
+                      transform: [
+                        {
+                          scale: isActive ? 1.02 : 1,
+                        },
+                      ],
+                    },
                   ]}
                 >
-                  <Text
+                  {/* NUMBER */}
+                  <View
                     style={[
-                      styles.numberText,
+                      styles.numberContainer,
 
-                      isActive && styles.activeNumberText,
+                      isActive && styles.activeNumberContainer,
                     ]}
                   >
-                    {item.id}
-                  </Text>
-                </View>
+                    <Text
+                      style={[
+                        styles.numberText,
 
-                {/* INFO */}
-                <View style={styles.infoContainer}>
-                  {/* CHECK IN */}
-                  <View style={styles.infoColumn}>
-                    <Text style={styles.infoTitle}>{item.checkIn}</Text>
-
-                    <Text style={styles.infoSubtitle}>Checked-In</Text>
+                        isActive && styles.activeNumberText,
+                      ]}
+                    >
+                      {item.id}
+                    </Text>
                   </View>
+                  {/* INFO */}
+                  <View style={styles.infoContainer}>
+                    {/* CHECK IN */}
+                    <View style={styles.infoColumn}>
+                      <Text style={styles.infoTitle}>{item.checkIn}</Text>
 
-                  <View style={styles.line} />
+                      <Text style={styles.infoSubtitle}>Checked-In</Text>
+                    </View>
 
-                  {/* CHECK OUT */}
-                  <View style={styles.infoColumn}>
-                    <Text style={styles.infoTitle}>{item.checkOut}</Text>
+                    <View style={styles.line} />
 
-                    <Text style={styles.infoSubtitle}>Checked-Out</Text>
+                    {/* CHECK OUT */}
+                    <View style={styles.infoColumn}>
+                      <Text style={styles.infoTitle}>{item.checkOut}</Text>
+
+                      <Text style={styles.infoSubtitle}>Checked-Out</Text>
+                    </View>
+
+                    <View style={styles.line} />
+
+                    {/* TOTAL HOURS */}
+                    <View style={styles.infoColumn}>
+                      <Text style={styles.infoTitle}>{item.totalHours}</Text>
+
+                      <Text style={styles.infoSubtitle}>Total-Hours</Text>
+                    </View>
                   </View>
-
-                  <View style={styles.line} />
-
-                  {/* TOTAL HOURS */}
-                  <View style={styles.infoColumn}>
-                    <Text style={styles.infoTitle}>{item.totalHours}</Text>
-
-                    <Text style={styles.infoSubtitle}>Total-Hours</Text>
-                  </View>
-                </View>
-              </View>
+                </Animated.View>
+              </Animated.View>
             );
           })}
         </ScrollView>

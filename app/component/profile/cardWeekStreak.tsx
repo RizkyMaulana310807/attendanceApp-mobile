@@ -44,7 +44,7 @@ export const StreakCard: React.FC<StreakCardProps> = ({
       const bearerToken = await AsyncStorage.getItem("accessToken");
 
       const response = await axios.get(
-        "http://10.249.221.72:3000/api/attendances/userAttendance",
+        "http://127.0.0.1:3000/api/attendances/userAttendance",
         {
           headers: {
             Authorization: `Bearer ${bearerToken}`,

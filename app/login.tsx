@@ -4,7 +4,7 @@ import { loginUser } from "@/src/services/auth.services";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Checkbox from "expo-checkbox";
 import { router, Stack } from "expo-router";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Alert,
   Image,
@@ -40,6 +40,11 @@ export default function LoginScreen() {
 
       router.replace("/home");
     } catch (error: any) {
+      console.log(error);
+      console.log("MESSAGE:", error.message);
+      console.log("CODE:", error.code);
+      console.log("RESPONSE:", error.response);
+      console.log("REQUEST:", error.request);
       console.log(error);
 
       Alert.alert(

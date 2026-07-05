@@ -27,7 +27,7 @@ export default function ProfileScreen() {
 
     try {
       const response = await axios.get(
-        "http://10.249.221.72:3000/api/attendances/total",
+        "http://127.0.0.1:3000/api/attendances/total",
         {
           headers: {
             Authorization: `Bearer ${bearerToken}`,

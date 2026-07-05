@@ -46,7 +46,7 @@ export default function Home() {
       const bearerToken = await AsyncStorage.getItem("accessToken");
 
       const response = await axios.get(
-        "http://10.249.221.72:3000/api/attendances/today",
+        "http://127.0.0.1:3000/api/attendances/today",
         {
           headers: {
             Authorization: `Bearer ${bearerToken}`,
@@ -137,7 +137,7 @@ export default function Home() {
       setIsLoading(true);
 
       const response = await axios.post(
-        "http://10.249.221.72:3000/api/attendances/action",
+        "http://127.0.0.1:3000/api/attendances/action",
         {},
         {
           headers: {
